@@ -1,5 +1,6 @@
 package com.teamname.hotelfx;
 
+import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,13 +12,43 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Hotel FX");
+        primaryStage.setScene(new Scene(root, 1400, 700));
         primaryStage.show();
+
+        System.out.println(HotelfxAccess.getInstance().getAllRooms());
+
     }
 
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init() {
+
+        try {
+            HotelfxAccess.getInstance().getAllRooms();
+        } catch (Exception e) {
+            displayException(e);
+        }
+    }
+
+    @Override
+    public void stop() {
+
+        try {
+            HotelfxAccess.getInstance().closeDb();
+        } catch (Exception e) {
+            displayException(e);
+        }
+    }
+
+    private static void displayException(Exception e) {
+
+        System.out.println("###### Exception ######");
+        e.printStackTrace();
+        System.exit(0);
     }
 }
