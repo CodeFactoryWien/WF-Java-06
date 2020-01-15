@@ -40,7 +40,7 @@ public class HotelfxAccess {
     }
 
     public List<Room> getAllRooms() throws SQLException {
-        String sql = "SELECT * FROM " + roomTable + " ORDER BY room_id";
+        String sql = "SELECT * FROM " + roomTable + " ORDER BY roomID";
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         List<Room> list = FXCollections.observableArrayList();
