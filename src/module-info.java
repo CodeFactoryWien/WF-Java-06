@@ -5,4 +5,5 @@ module WF.Java {
     requires mysql.connector.java;
 
     opens com.teamname.hotelfx;
+    opens com.teamname.hotelfx.data;
 }

@@ -40,7 +40,7 @@ public class Controller {
             TableColumn<ObservableList<String>, String> column = new TableColumn<>(
                     columnNames.get(i)
             );
-            column.setCellValueFactory(new PropertyValueFactory<>("floor"));
+            column.setCellValueFactory(new PropertyValueFactory<>(columnNames.get(i)));
 
             if(tableView == guest_tableView){
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(9));
