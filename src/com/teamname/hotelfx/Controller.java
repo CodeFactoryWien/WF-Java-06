@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -30,6 +31,7 @@ public class Controller {
         addColumnsToTable(HotelfxAccess.getInstance().getColumnNames("guests"), guest_tableView);
         addColumnsToTable(HotelfxAccess.getInstance().getColumnNames("rooms"), room_tableView);
 
+        room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms());
     }
 
 
@@ -38,6 +40,8 @@ public class Controller {
             TableColumn<ObservableList<String>, String> column = new TableColumn<>(
                     columnNames.get(i)
             );
+            column.setCellValueFactory(new PropertyValueFactory<>("floor"));
+
             if(tableView == guest_tableView){
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(9));
             }else{

@@ -50,10 +50,11 @@ public class HotelfxAccess {
 
         while (rs.next()) {
             int id = rs.getInt("roomID");
-            int number = rs.getInt("roomNumber") ;
-            String description = rs.getString("roomDescription");
+            int floor = rs.getInt("floor") ;
+            String number = rs.getString("roomNumber") ;
+            String description = rs.getString("description");
 
-            list.add(new Room(id, number, description));
+            list.add(new Room(id, floor, number, description));
         }
 
         pstmnt.close();
