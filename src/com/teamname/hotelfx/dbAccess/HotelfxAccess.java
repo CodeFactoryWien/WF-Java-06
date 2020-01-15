@@ -14,8 +14,9 @@ public class HotelfxAccess {
     private static final String roomTable = "rooms";
     private static final String guestTable = "guests";
     PreparedStatement pstmnt;
-    private static HotelfxAccess instance;
 
+    /* creates on instance of dbAccess for access to other classes with getter*/
+    private static HotelfxAccess instance;
     static {
         try {
             instance = new HotelfxAccess();
@@ -26,6 +27,7 @@ public class HotelfxAccess {
 
     private HotelfxAccess() throws SQLException, ClassNotFoundException {
 
+        /* database connection*/
         Class.forName("com.mysql.cj.jdbc.Driver");
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(
@@ -82,6 +84,7 @@ public class HotelfxAccess {
             String guest_lastName = rs.getString("lastName");
             String address = rs.getString("address");
             String city = rs.getString("city");
+            String state = rs.getString("state");
             String zipCode = rs.getString("zipCode");
             String country = rs.getString("country");
             String phoneNumber = rs.getString("phoneNumber");
@@ -89,7 +92,7 @@ public class HotelfxAccess {
             String gender = rs.getString("gender");
 
             list.add(new Guest(id,guest_firstName,guest_lastName,
-                    address,city,zipCode,country,phoneNumber,email,gender));
+                    address,city,zipCode,country,phoneNumber,email,gender, state));
         }
 
         pstmnt.close();
