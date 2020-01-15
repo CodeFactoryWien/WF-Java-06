@@ -1,6 +1,6 @@
 package com.teamname.hotelfx.data;
 
-public class Guest<gender> {
+public class Guest {
     private int guestID;
     private String guest_firstName;
     private String guest_lastName;
@@ -107,4 +107,6 @@ public class Guest<gender> {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+
 }
