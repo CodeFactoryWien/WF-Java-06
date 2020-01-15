@@ -17,8 +17,6 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primaryStage.show();
 
-        System.out.println(HotelfxAccess.getInstance().getAllRooms());
-
     }
 
 
@@ -30,7 +28,7 @@ public class Main extends Application {
     public void init() {
 
         try {
-            HotelfxAccess.getInstance().getAllRooms();
+            HotelfxAccess.getInstance().getAllGuests();
         } catch (Exception e) {
             displayException(e);
         }

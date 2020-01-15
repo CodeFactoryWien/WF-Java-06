@@ -1,6 +1,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
 <BorderPane fx:controller="com.teamname.hotelfx.Controller"
             xmlns:fx="http://javafx.com/fxml">
 
@@ -87,23 +88,30 @@
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" text="Room Details"
                                        GridPane.halignment="CENTER"/>
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="Hotel: "/>
+                                <ComboBox fx:id="hotelComboBox" layoutX="15.0" layoutY="33.0" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="Room number: "/>
-                                <TextField fx:id="room_number" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Room number: "/>
+                                <TextField fx:id="room_number" GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Floor: "/>
-                                <TextField fx:id="room_floor" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.halignment="RIGHT"/>
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="Floor: "/>
+                                <TextField fx:id="room_floor" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="Description: "/>
-                                <TextField fx:id="room_description" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Description: "/>
+                                <TextField fx:id="room_description" GridPane.columnIndex="1" GridPane.rowIndex="4"
                                            GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Start date: "/>
-                                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="End date: "/>
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="Start date: "/>
                                 <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="End date: "/>
+                                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="6"/>
                             </GridPane>
                         </VBox>
                     </left>

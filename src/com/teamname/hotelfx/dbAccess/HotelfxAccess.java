@@ -42,22 +42,28 @@ public class HotelfxAccess {
         conn.close();
     }
 
-    public List<Room> getAllRooms() throws SQLException {
-        String sql = "SELECT * FROM " + roomTable + " ORDER BY roomID";
+    public List<Room> getAllRooms(String hotelName) throws SQLException {
+//        String sql = "SELECT * FROM " + roomTable + " ORDER BY roomID";
+        String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
+                                               "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+                                                "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
+                                                "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID " +
+                                                "WHERE hotels.hotelName = '" + hotelName +"'";
+                ;
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         List<Room> list = FXCollections.observableArrayList();
 
         while (rs.next()) {
             int id = rs.getInt("roomID");
-
-            int floor = rs.getInt("floor") ;
-
             String number = rs.getString("roomNumber");
-
+            int floor = rs.getInt("floor") ;
             String description = rs.getString("description");
+            String status = rs.getString("roomStatus");
+            String type = rs.getString("roomType");
+            String hotel = rs.getString("hotelName");
 
-            list.add(new Room(id, floor, number, description));
+            list.add(new Room(id, floor, number, description, status, type, hotel));
         }
 
         pstmnt.close();
@@ -71,7 +77,7 @@ public class HotelfxAccess {
         List<Guest> list = FXCollections.observableArrayList();
 
         while (rs.next()) {
-            int id = rs.getInt("roomID");
+            int id = rs.getInt("guestID");
             String guest_firstName = rs.getString("firstName");
             String guest_lastName = rs.getString("lastName");
             String address = rs.getString("address");
@@ -79,7 +85,7 @@ public class HotelfxAccess {
             String zipCode = rs.getString("zipCode");
             String country = rs.getString("country");
             String phoneNumber = rs.getString("phoneNumber");
-            String email = rs.getString("email");
+            String email = rs.getString("emailAddress");
             String gender = rs.getString("gender");
 
             list.add(new Guest(id,guest_firstName,guest_lastName,
@@ -90,15 +96,32 @@ public class HotelfxAccess {
         return list;
     }
 
-    public List<String> getColumnNames(String tableName) throws SQLException {
+    public List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
-        String sql = "SELECT * FROM " + tableName;
+//        String sql = "SELECT * FROM " + tableName;
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         ResultSetMetaData rsmd = rs.getMetaData();
-        for (int i = 2; i < rsmd.getColumnCount(); i++) {
+        for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
             list.add(rsmd.getColumnName(i));
         }
+
+        pstmnt.close();
+        return list;
+    }
+
+    public List<String> getAllHotels() throws SQLException {
+        String sql = "SELECT hotelName FROM hotels ORDER BY hotelID";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<String> list = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            String hotelName = rs.getString("hotelName");
+            list.add(hotelName);
+        }
+
+        pstmnt.close();
         return list;
     }
 
