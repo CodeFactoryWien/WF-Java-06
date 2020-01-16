@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,12 +63,13 @@ public class Controller {
     @FXML
     private TableView<Room> room_tableView;
 
-    List<Guest> list = FXCollections.observableArrayList();
+    private List<Guest> listGuest = FXCollections.observableArrayList();
+    private List<Room> listRoom = FXCollections.observableArrayList();
 
 
     public void initialize() throws SQLException {
 
-        list = HotelfxAccess.getInstance().getAllGuests();
+        listGuest = HotelfxAccess.getInstance().getAllGuests();
 
         /* sql queries for columns headers*/
         String guestColumnsSQL = "SELECT * FROM guests";
@@ -83,10 +85,13 @@ public class Controller {
         /* add guests data to guest tableView*/
         guest_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllGuests());
 
+        /*add change listeners to tableViews*/
         guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
-                new ListSelectChangeListener()
+                new ListSelectChangeListener(guest_tableView)
         );
-        guest_tableView.getSelectionModel().selectFirst();
+        room_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                new ListSelectChangeListener(room_tableView)
+        );
 
         /*add hotels form database to chotel omboBox*/
         hotelComboBox.getItems().setAll(HotelfxAccess.getInstance().getAllHotels());
@@ -96,13 +101,15 @@ public class Controller {
             if(newHotel != null){
                 try {
                     room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms(newHotel));
+                    listRoom = HotelfxAccess.getInstance().getAllRooms(newHotel);
+                    room_tableView.getSelectionModel().selectFirst();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
         });
         hotelComboBox.getSelectionModel().selectFirst();
-
+        guest_tableView.getSelectionModel().selectFirst();
     }
     
     public void addColumnsToTable(List<String> columnNames, TableView tableView) {
@@ -130,22 +137,36 @@ public class Controller {
     }
 
     private class ListSelectChangeListener implements ChangeListener<Number> {
+        private TableView tableView;
+
+        ListSelectChangeListener(TableView tableView) {
+            this.tableView = tableView;
+        }
 
         @Override
         public void changed(ObservableValue<? extends Number> selected,
                             Number old_val, Number new_val) {
 
-            Guest guest = list.get(new_val.intValue());
-            guest_firstName.setText((String.valueOf(guest.getGuest_firstName())));
-            guest_lastName.setText(guest.getGuest_lastName());
-            guest_gender.setText(guest.getGender());
-            guest_address.setText(guest.getAddress());
-            guest_city.setText(guest.getCity());
-            guest_country.setText(guest.getCountry());
-            guest_email.setText(guest.getEmail());
-            guest_phoneNumber.setText(guest.getPhoneNumber());
-            guest_state.setText(guest.getState());
-            guest_zipCode.setText(guest.getZipCode());
+            if(tableView.getId().equals("guest_tableView")){
+                Guest guest = listGuest.get(new_val.intValue());
+                guest_firstName.setText((String.valueOf(guest.getGuest_firstName())));
+                guest_lastName.setText(guest.getGuest_lastName());
+                guest_gender.setText(guest.getGender());
+                guest_address.setText(guest.getAddress());
+                guest_city.setText(guest.getCity());
+                guest_country.setText(guest.getCountry());
+                guest_email.setText(guest.getEmail());
+                guest_phoneNumber.setText(guest.getPhoneNumber());
+                guest_state.setText(guest.getState());
+                guest_zipCode.setText(guest.getZipCode());            }
+            else{
+                Room room = listRoom.get(new_val.intValue());
+                room_number.setText(room.getRoomNumber());
+                room_floor.setText(String.valueOf(room.getFloor()));
+                room_description.setText(room.getDescription());
+            }
+
+
 
         }
     }
