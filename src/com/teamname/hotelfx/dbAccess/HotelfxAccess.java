@@ -50,8 +50,8 @@ public class HotelfxAccess {
                                                "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
                                                 "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
                                                 "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID " +
-                                                "WHERE hotels.hotelName = '" + hotelName +"'";
-                ;
+                                                "WHERE hotels.hotelName = '" + hotelName + "' AND rooms.roomNumber NOT LIKE 'S%'";
+
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
         List<Room> list = FXCollections.observableArrayList();
