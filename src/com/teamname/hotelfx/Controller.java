@@ -6,30 +6,68 @@ import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class Controller {
-
+    @FXML
+    public TextField guest_firstName;
+    @FXML
+    public TextField guest_lastName;
+    @FXML
+    public TextField guest_gender;
+    @FXML
+    public TextField guest_address;
+    @FXML
+    public TextField guest_city;
+    @FXML
+    public TextField guest_state;
+    @FXML
+    public TextField guest_zipCode;
+    @FXML
+    public TextField guest_country;
+    @FXML
+    public TextField guest_phoneNumber;
+    @FXML
+    public TextField guest_email;
+    @FXML
+    public Button guest_saveBtn;
+    @FXML
+    public Button guest_cancelBtn;
+    @FXML
+    public TextField room_number;
+    @FXML
+    public TextField room_floor;
+    @FXML
+    public TextField room_description;
+    @FXML
+    public DatePicker startDatePicker;
+    @FXML
+    public DatePicker endDatePicker;
+    @FXML
+    public Button room_saveBtn;
+    @FXML
+    public Button room_cancelBtn;
     @FXML
     private ComboBox hotelComboBox;
-
     @FXML
     private TableView<Guest> guest_tableView;
-
     @FXML
     private TableView<Room> room_tableView;
 
+    List<Guest> list = FXCollections.observableArrayList();
+
 
     public void initialize() throws SQLException {
+
+        list = HotelfxAccess.getInstance().getAllGuests();
 
         /* sql queries for columns headers*/
         String guestColumnsSQL = "SELECT * FROM guests";
@@ -45,6 +83,11 @@ public class Controller {
         /* add guests data to guest tableView*/
         guest_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllGuests());
 
+        guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                new ListSelectChangeListener()
+        );
+        guest_tableView.getSelectionModel().selectFirst();
+
         /*add hotels form database to chotel omboBox*/
         hotelComboBox.getItems().setAll(HotelfxAccess.getInstance().getAllHotels());
 
@@ -59,6 +102,7 @@ public class Controller {
             }
         });
         hotelComboBox.getSelectionModel().selectFirst();
+
     }
     
     public void addColumnsToTable(List<String> columnNames, TableView tableView) {
@@ -82,6 +126,27 @@ public class Controller {
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(6));
             }
             tableView.getColumns().add(column);
+        }
+    }
+
+    private class ListSelectChangeListener implements ChangeListener<Number> {
+
+        @Override
+        public void changed(ObservableValue<? extends Number> selected,
+                            Number old_val, Number new_val) {
+
+            Guest guest = list.get(new_val.intValue());
+            guest_firstName.setText((String.valueOf(guest.getGuest_firstName())));
+            guest_lastName.setText(guest.getGuest_lastName());
+            guest_gender.setText(guest.getGender());
+            guest_address.setText(guest.getAddress());
+            guest_city.setText(guest.getCity());
+            guest_country.setText(guest.getCountry());
+            guest_email.setText(guest.getEmail());
+            guest_phoneNumber.setText(guest.getPhoneNumber());
+            guest_state.setText(guest.getState());
+            guest_zipCode.setText(guest.getZipCode());
+
         }
     }
 

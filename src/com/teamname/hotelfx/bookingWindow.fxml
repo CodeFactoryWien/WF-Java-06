@@ -35,8 +35,8 @@
 
                 <BorderPane>
                     <left>
-                        <VBox>
-                            <GridPane hgap="7" vgap="7">
+                        <VBox spacing="0">
+                            <GridPane hgap="7" vgap="4">
                                 <padding>
                                     <Insets left="30" top="30" right="30" bottom="30"/>
                                 </padding>
@@ -59,31 +59,38 @@
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Address: "/>
                                 <TextField fx:id="guest_address" GridPane.columnIndex="1" GridPane.rowIndex="4"
                                            GridPane.halignment="RIGHT"/>
-
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="City: "/>
                                 <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="Zip Code: "/>
-                                <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="6"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="State: "/>
+                                <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
+
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="Zip Code: "/>
+                                <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="7"
                                            GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="Country: "/>
-                                <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="7"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="RIGHT" text="Country: "/>
+                                <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="8"
                                            GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="RIGHT"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.halignment="RIGHT"
                                        text="Phone number: "/>
-                                <TextField fx:id="guest_phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="8"
+                                <TextField fx:id="guest_phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="9"
                                            GridPane.halignment="RIGHT"/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.halignment="RIGHT" text="Email: "/>
-                                <TextField fx:id="guest_email" GridPane.columnIndex="1" GridPane.rowIndex="9"
+                                <Label GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.halignment="RIGHT" text="Email: "/>
+                                <TextField fx:id="guest_email" GridPane.columnIndex="1" GridPane.rowIndex="10"
                                            GridPane.halignment="RIGHT"/>
+
+                                <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
+                                    <Button fx:id="guest_saveBtn" text="Save"/>
+                                    <Button fx:id="guest_cancelBtn" text="Cancel"/>
+                                </HBox>
                             </GridPane>
 
-                            <GridPane hgap="7" vgap="7">
+                            <GridPane hgap="7" vgap="4">
                                 <padding>
-                                    <Insets left="30" right="30"/>
+                                    <Insets left="30" right="30" bottom="30"/>
                                 </padding>
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" text="Room Details"
@@ -108,10 +115,15 @@
                                            GridPane.halignment="RIGHT"/>
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="Start date: "/>
-                                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="End date: "/>
-                                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                                <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" spacing="15" GridPane.halignment="CENTER">
+                                    <Button fx:id="room_saveBtn" text="Save"/>
+                                    <Button fx:id="room_cancelBtn" text="Cancel"/>
+                                </HBox>
                             </GridPane>
                         </VBox>
                     </left>

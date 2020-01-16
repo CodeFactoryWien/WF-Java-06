@@ -17,6 +17,7 @@ public class HotelfxAccess {
 
     /* creates on instance of dbAccess for access to other classes with getter*/
     private static HotelfxAccess instance;
+
     static {
         try {
             instance = new HotelfxAccess();
@@ -47,10 +48,10 @@ public class HotelfxAccess {
     public List<Room> getAllRooms(String hotelName) throws SQLException {
 //        String sql = "SELECT * FROM " + roomTable + " ORDER BY roomID";
         String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
-                                               "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
-                                                "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
-                                                "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID " +
-                                                "WHERE hotels.hotelName = '" + hotelName + "' AND rooms.roomNumber NOT LIKE 'S%'";
+                "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+                "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
+                "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID " +
+                "WHERE hotels.hotelName = '" + hotelName + "' AND rooms.roomNumber NOT LIKE 'S%'";
 
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
@@ -59,7 +60,7 @@ public class HotelfxAccess {
         while (rs.next()) {
             int id = rs.getInt("roomID");
             String number = rs.getString("roomNumber");
-            int floor = rs.getInt("floor") ;
+            int floor = rs.getInt("floor");
             String description = rs.getString("description");
             String status = rs.getString("roomStatus");
             String type = rs.getString("roomType");
@@ -91,8 +92,8 @@ public class HotelfxAccess {
             String email = rs.getString("emailAddress");
             String gender = rs.getString("gender");
 
-            list.add(new Guest(id,guest_firstName,guest_lastName,
-                    address,city,zipCode,country,phoneNumber,email,gender, state));
+            list.add(new Guest(id, guest_firstName, guest_lastName,
+                    address, city, zipCode, country, phoneNumber, email, gender, state));
         }
 
         pstmnt.close();
