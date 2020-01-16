@@ -146,6 +146,10 @@
                 </AnchorPane>
             </Tab>
 
+            <Tab text="Tab 3" fx:id="bookingTable">
+               <fx:include source="fxml/bookingTableWindow.fxml" fx:id="bookingTableTab"/>
+            </Tab>
+
         </TabPane>
     </center>
 </BorderPane>

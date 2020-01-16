@@ -1,5 +1,6 @@
 package com.teamname.hotelfx;
 
+import com.teamname.hotelfx.controller.BookingTableWindowController;
 import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
@@ -57,6 +58,10 @@ public class Controller {
     @FXML
     public Button room_cancelBtn;
     @FXML
+    public Tab bookingTable;
+    @FXML
+    private BookingTableWindowController bookingTableWindowController;
+    @FXML
     private ComboBox hotelComboBox;
     @FXML
     private TableView<Guest> guest_tableView;
@@ -77,6 +82,7 @@ public class Controller {
                 "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
                 "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
                 "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
+
 
         /* add column headers to tableViews*/
         addColumnsToTable(HotelfxAccess.getInstance().getColumnNames(guestColumnsSQL), guest_tableView);
