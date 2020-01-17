@@ -1,7 +1,7 @@
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.collections.FXCollections?>
 <BorderPane fx:controller="com.teamname.hotelfx.Controller"
             xmlns:fx="http://javafx.com/fxml">
 
@@ -33,62 +33,72 @@
         <TabPane>
             <Tab text="Tab 1">
 
-                <BorderPane>
+                <BorderPane fx:id="borderPane">
                     <left>
                         <VBox spacing="0">
-                            <GridPane hgap="7" vgap="4">
+                            <GridPane fx:id="guest_gridPane" hgap="7" vgap="4">
                                 <padding>
                                     <Insets left="30" top="30" right="30" bottom="30"/>
                                 </padding>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" text="Guest Details"
-                                       GridPane.halignment="CENTER"/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="0"
+                                       GridPane.columnSpan="2" text="Guest Details" GridPane.halignment="CENTER"/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="1"
+                                       GridPane.halignment="RIGHT" text="First name: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="2"
+                                       GridPane.halignment="RIGHT" text="Last name: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="3"
+                                       GridPane.halignment="RIGHT" text="Gender: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="4"
+                                       GridPane.halignment="RIGHT" text="Address: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
+                                       GridPane.halignment="RIGHT" text="State: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="5"
+                                       GridPane.halignment="RIGHT" text="City: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="7"
+                                       GridPane.halignment="RIGHT" text="Zip Code: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="8"
+                                       GridPane.halignment="RIGHT" text="Country: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="9"
+                                       GridPane.halignment="RIGHT" text="Phone number: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="10"
+                                       GridPane.halignment="RIGHT" text="Email: "/>
 
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="First name: "/>
+                                <!-- Toggle Button -->
+                                <ToggleButton fx:id="toggleButton" onAction="#toggleOnAction" mnemonicParsing="false"
+                                              prefHeight="25.0" prefWidth="45.0" text="OFF"
+                                              style="-fx-background-color: grey;" GridPane.columnIndex="2"
+                                              GridPane.rowIndex="1"/>
+                                <!-- -->
+
+                                <TextField fx:id="guest_ID" visible="false" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
                                 <TextField fx:id="guest_firstName" GridPane.columnIndex="1" GridPane.rowIndex="1"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Last name: "/>
                                 <TextField fx:id="guest_lastName" GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="Gender: "/>
                                 <TextField fx:id="guest_gender" GridPane.columnIndex="1" GridPane.rowIndex="3"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Address: "/>
                                 <TextField fx:id="guest_address" GridPane.columnIndex="1" GridPane.rowIndex="4"
                                            GridPane.halignment="RIGHT"/>
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="City: "/>
                                 <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="State: "/>
                                 <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="Zip Code: "/>
                                 <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="7"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="RIGHT" text="Country: "/>
                                 <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="8"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.halignment="RIGHT"
-                                       text="Phone number: "/>
                                 <TextField fx:id="guest_phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="9"
                                            GridPane.halignment="RIGHT"/>
-
-                                <Label GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.halignment="RIGHT" text="Email: "/>
                                 <TextField fx:id="guest_email" GridPane.columnIndex="1" GridPane.rowIndex="10"
                                            GridPane.halignment="RIGHT"/>
 
                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
-                                    <Button fx:id="guest_saveBtn" text="Save"/>
-                                    <Button fx:id="guest_cancelBtn" text="Cancel"/>
+                                    <Button fx:id="guest_saveBtn" onAction="#saveTextFieldsGuests" text="Save"/>
+                                    <Button fx:id="guest_clearBtn" onAction="#clearTextFields" text="Clear"/>
                                 </HBox>
                             </GridPane>
 
-                            <GridPane hgap="7" vgap="4">
+                            <GridPane fx:id="gridPane_room" hgap="7" vgap="4">
                                 <padding>
                                     <Insets left="30" right="30" bottom="30"/>
                                 </padding>
@@ -122,7 +132,7 @@
 
                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" spacing="15" GridPane.halignment="CENTER">
                                     <Button fx:id="room_saveBtn" text="Save"/>
-                                    <Button fx:id="room_cancelBtn" text="Cancel"/>
+                                    <Button fx:id="room_clearBtn" onAction="#clearTextFields" text="Clear"/>
                                 </HBox>
                             </GridPane>
                         </VBox>

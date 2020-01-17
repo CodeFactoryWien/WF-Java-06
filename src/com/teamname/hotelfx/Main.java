@@ -12,6 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("bookingWindow.fxml"));
+        root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
         primaryStage.setTitle("Hotel FX");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);

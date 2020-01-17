@@ -132,4 +132,10 @@ public class HotelfxAccess {
     public static HotelfxAccess getInstance() {
         return instance;
     }
+
+    public Connection getConn() {
+        return conn;
+    }
 }
+
+

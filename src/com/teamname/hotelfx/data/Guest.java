@@ -8,6 +8,11 @@ import javafx.beans.property.StringProperty;
 public class Guest {
 
     private final IntegerProperty guestID = new SimpleIntegerProperty(this, "guestID");
+
+    public Guest() {
+
+    }
+
     public IntegerProperty guestIProperty(){
         return guestID;
     }
@@ -163,3 +168,4 @@ public class Guest {
         this.gender.set(gender);
     }
 }
+
