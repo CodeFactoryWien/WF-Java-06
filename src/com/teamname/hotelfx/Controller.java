@@ -68,7 +68,7 @@ public class Controller {
     @FXML
     public Button room_saveBtn;
     @FXML
-    public Button room_cancelBtn;
+    public Button room_clearBtn;
     @FXML
     public Tab bookingTable;
     @FXML
@@ -83,6 +83,8 @@ public class Controller {
     private BorderPane borderPane;
     @FXML
     private GridPane guest_gridPane;
+    @FXML
+    public GridPane room_gridPane;
     @FXML
     private ToggleButton toggleButton;
 
@@ -155,20 +157,18 @@ public class Controller {
 
     /*********************************** CLEAR BUTTON *******************************************
      *
-     * @param c
+     * @param
      */
     @FXML
-    protected void clearTextFields(ActionEvent c) {
+    protected void clearTextFields(GridPane gridpane) {
 
-        if (guest_clearBtn.isArmed()) {
-            for (Node node : guest_gridPane.getChildren()) {
+        for (Node node : gridpane.getChildren()) {
                 //System.out.println("Id: " + node.getId());
                 if (node instanceof TextField) {
                     // clear fields
                     ((TextField) node).setText("");
                 }
             }
-        }
     }
 
     /*********************************** TOGGLE BUTTON *******************************************
@@ -297,6 +297,15 @@ public class Controller {
         });
         hotelComboBox.getSelectionModel().selectFirst();
         guest_tableView.getSelectionModel().selectFirst();
+
+        guest_clearBtn.setOnAction(event -> {
+            clearTextFields(guest_gridPane);
+        });
+
+        room_clearBtn.setOnAction(event -> {
+            clearTextFields(room_gridPane);
+        });
+
     }
     
     public void addColumnsToTable(List<String> columnNames, TableView tableView) {
