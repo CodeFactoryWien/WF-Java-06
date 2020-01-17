@@ -6,4 +6,5 @@ module WF.Java {
 
     opens com.teamname.hotelfx;
     opens com.teamname.hotelfx.data;
+    opens com.teamname.hotelfx.controller;
 }
