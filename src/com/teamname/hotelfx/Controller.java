@@ -349,6 +349,7 @@ public class Controller {
                 guest_state.setText(guest.getState());
                 guest_zipCode.setText(guest.getZipCode());            }
             else{
+                if (new_val.intValue() < 0) return;
                 Room room = listRoom.get(new_val.intValue());
                 room_number.setText(room.getRoomNumber());
                 room_floor.setText(String.valueOf(room.getFloor()));
