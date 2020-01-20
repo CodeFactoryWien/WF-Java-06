@@ -2,8 +2,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:controller="com.teamname.hotelfx.Controller"
-            xmlns:fx="http://javafx.com/fxml">
+<BorderPane fx:controller="com.teamname.hotelfx.Controller" xmlns:fx="http://javafx.com/fxml">
 
     <top>
         <MenuBar>
@@ -32,7 +31,6 @@
     <center>
         <TabPane>
             <Tab text="Tab 1">
-
                 <BorderPane fx:id="borderPane">
                     <left>
                         <VBox spacing="0">
@@ -69,7 +67,6 @@
                                               prefHeight="25.0" prefWidth="45.0" text="OFF"
                                               style="-fx-background-color: grey;" GridPane.columnIndex="2"
                                               GridPane.rowIndex="1"/>
-                                <!-- -->
 
                                 <TextField fx:id="guest_ID" visible="false" GridPane.columnIndex="1"
                                            GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
@@ -151,8 +148,8 @@
             </Tab>
 
             <Tab text="Tab 2">
-                <AnchorPane>
-                    <Label text="Hello there"/>
+                <AnchorPane fx:id="chartTable">
+
                 </AnchorPane>
             </Tab>
 
@@ -162,4 +159,10 @@
 
         </TabPane>
     </center>
+    <Pane>
+        <Label fx:id="labelConnect" layoutX="155.0" layoutY="0" prefHeight="25.0" prefWidth="3000.0"
+               styleClass="conLabel"/>
+        <ToggleButton fx:id="connectBtn" onAction="#connectdb" mnemonicParsing="false" prefHeight="18.0"
+                      prefWidth="95.0" text="NIGHTMODE"/>
+    </Pane>
 </BorderPane>

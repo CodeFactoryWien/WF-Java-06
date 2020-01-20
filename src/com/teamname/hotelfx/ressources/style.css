@@ -1,3 +1,52 @@
-.text-id {
-    -fx-text-fill: red;
+
+.conLabel {
+    -fx-background-color: green;
 }
+
+.status-0 {
+    -fx-background-color: #4D2C37;
+}
+.status-1 {
+    -fx-background-color: #DB3B2E;
+}
+.status-2 {
+    -fx-background-color: #C3B2CE;
+}
+.status-3 {
+    -fx-background-color: #53684B;
+}
+.status-4 {
+    -fx-background-color: #B7B65C;
+}
+.status-5 {
+    -fx-background-color: #2CABA2;
+}
+.status-6 {
+    -fx-background-color: #3E4A63;
+}
+.status-7 {
+    -fx-background-color: #647B77;
+}
+.status-8 {
+    -fx-background-color: #53684B;
+}
+.status-9 {
+    -fx-background-color: #32455E;
+}
+
+.custom-dashed-border:hover {
+
+    -fx-border-radius: 16 16 0 0;
+
+}
+
+/*
+.root {
+    //css instructions here
+    -fx-blend-mode:difference;
+    -fx-opacity:1;
+}
+.text {
+    -fx-fill: black;
+}
+*/

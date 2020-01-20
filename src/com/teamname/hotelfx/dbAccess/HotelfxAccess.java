@@ -1,3 +1,4 @@
+
 package com.teamname.hotelfx.dbAccess;
 
 import com.teamname.hotelfx.data.Guest;
@@ -7,45 +8,67 @@ import javafx.collections.FXCollections;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HotelfxAccess {
 
-    private Connection conn;
+    private static Connection conn = null;
+    public static final Logger logger = Logger.getLogger(HotelfxAccess.class.getName());
+    public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+    public static final String DB_DATABASE = "hotelfx";
+    public static final String DB_CONNECTION = "jdbc:mysql://localhost/" + DB_DATABASE + "?useLegacyDatetimeCode=false&serverTimezone=UTC";
+    public static final String DB_USER = "root";
+    public static final String DB_PASSWORD = "";
+
+
     private static final String roomTable = "rooms";
     private static final String guestTable = "guests";
-    PreparedStatement pstmnt;
-
-    /* creates on instance of dbAccess for access to other classes with getter*/
     private static HotelfxAccess instance;
+    private static PreparedStatement pstmnt;
 
-    static {
+
+    public static Connection getDBConnection() {
+
         try {
+            Class.forName(DB_DRIVER);
             instance = new HotelfxAccess();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            conn = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
+            ResultSet rs = conn.getMetaData().getCatalogs();
+            System.out.println("connecting...");
+
+
+            while (rs.next()) {
+                System.out.println(rs.getString("TABLE_CAT"));
+            }
+
+            return conn;
+        } catch (SQLException | ClassNotFoundException exception) {
+            System.out.println("cannot establish connection");
+            logger.log(Level.SEVERE, exception.getMessage());
         }
+        System.out.println(conn);
+        return conn;
     }
 
-    private HotelfxAccess() throws SQLException, ClassNotFoundException {
 
-        /* database connection*/
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        System.out.println("Connecting to database...");
-        conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/hotelfx" +
-                        "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-                "root",
-                "");
+    public HotelfxAccess() throws SQLException, ClassNotFoundException {
 
-        conn.setAutoCommit(true);
-        conn.setReadOnly(false);
+        //database connection
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//        conn = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
+//
+//        conn.setAutoCommit(true);
+//        conn.setReadOnly(false);
+
     }
 
-    public void closeDb() throws SQLException {
+    public static void closeDb() throws SQLException {
         conn.close();
     }
 
-    public List<Room> getAllRooms(String hotelName) throws SQLException {
+
+    public static List<Room> getAllRooms(String hotelName) throws SQLException {
 //        String sql = "SELECT * FROM " + roomTable + " ORDER BY roomID";
         String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
                 "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
@@ -73,7 +96,7 @@ public class HotelfxAccess {
         return list;
     }
 
-    public List<Guest> getAllGuests() throws SQLException {
+    public static List<Guest> getAllGuests() throws SQLException {
         String sql = "SELECT * FROM " + guestTable + " ORDER BY guestID";
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
@@ -100,7 +123,7 @@ public class HotelfxAccess {
         return list;
     }
 
-    public List<String> getColumnNames(String sql) throws SQLException {
+    public static List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
 //        String sql = "SELECT * FROM " + tableName;
         pstmnt = conn.prepareStatement(sql);
@@ -114,7 +137,7 @@ public class HotelfxAccess {
         return list;
     }
 
-    public List<String> getAllHotels() throws SQLException {
+    public static List<String> getAllHotels() throws SQLException {
         String sql = "SELECT hotelName FROM hotels ORDER BY hotelID";
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
@@ -137,5 +160,3 @@ public class HotelfxAccess {
         return conn;
     }
 }
-
-

@@ -5,6 +5,7 @@ import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.GuestSave;
 import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.data.StringPool;
+import com.teamname.hotelfx.dbAccess.BackupScheduler;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,8 +18,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,6 +80,8 @@ public class Controller {
     @FXML
     public Tab bookingTable;
     @FXML
+    public Pane chartTable;
+    @FXML
     private BookingTableWindowController bookingTableWindowController;
     @FXML
     private ComboBox hotelComboBox;
@@ -79,6 +89,7 @@ public class Controller {
     private TableView<Guest> guest_tableView;
     @FXML
     private TableView<Room> room_tableView;
+
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -87,10 +98,118 @@ public class Controller {
     public GridPane room_gridPane;
     @FXML
     private ToggleButton toggleButton;
+    @FXML
+    private ToggleButton connectButton;
+    @FXML
+    private ToggleButton connectBtn;
+
+    @FXML
+    private Label labelConnect;
+
+
 
     private List<Guest> listGuest = FXCollections.observableArrayList();
     private List<Room> listRoom = FXCollections.observableArrayList();
+    double scrW = Screen.getPrimary().getVisualBounds().getWidth();
+    double scrH = Screen.getPrimary().getVisualBounds().getHeight();
 
+    @FXML
+    public void chartTable() throws ParseException {
+
+    }
+
+
+    @FXML
+    public void labelConnectConnection() {
+    }
+
+    @FXML
+    public void connectdb() {
+
+        if (connectBtn.isSelected()) {
+            try {
+
+
+                HotelfxAccess.getDBConnection();
+                HotelfxAccess.getInstance().getAllGuests();
+                connectBtn.setText("DISCONNECTED");
+
+
+                labelConnect.setStyle("-fx-background-color: red;");
+                labelConnect.setText("  Failed to connect to database --");
+
+                if (HotelfxAccess.getDBConnection().isClosed()) {
+                    labelConnect.setStyle("-fx-background-color: grey;");
+                    labelConnect.setText("  Connection to Database closed --");
+                } else {
+                    labelConnect.setStyle("-fx-background-color: green;");
+                    labelConnect.setText("  Connection to Database established --");
+                }
+                connectBtn.setText("CONNECTED");
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            try {
+                HotelfxAccess.getDBConnection().close();
+                System.out.println("DB Conn closed");
+                connectBtn.setText("DISCONNECTED");
+
+                labelConnect.setStyle("-fx-background-color: grey;");
+                labelConnect.setText("  Connection to Database closed --");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    @FXML
+    public void dbConnection() {
+
+        connectButton.setOnAction(event -> {
+
+            if (connectButton.isSelected()) {
+                try {
+                    HotelfxAccess.getDBConnection();
+                    HotelfxAccess.getInstance().getAllGuests();
+
+                    connectButton.setText("DISCONNECTED");
+
+
+                    labelConnect.setStyle("-fx-background-color: red;");
+                    labelConnect.setText("  Failed to connect to database --");
+
+                    if (HotelfxAccess.getDBConnection().isClosed()) {
+                        labelConnect.setStyle("-fx-background-color: grey;");
+                        labelConnect.setText("  Connection to Database closed --");
+                    } else {
+                        labelConnect.setStyle("-fx-background-color: green;");
+                        labelConnect.setText("  Connection to Database established --");
+                    }
+                    connectButton.setText("CONNECTED");
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                try {
+                    HotelfxAccess.getDBConnection().close();
+                    System.out.println("DB Conn closed");
+                    connectButton.setText("DISCONNECTED");
+
+                    labelConnect.setStyle("-fx-background-color: grey;");
+                    labelConnect.setText("  Connection to Database closed --");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+    }
 
     /************************************* SAVE FEATURE ******************************************
      * -- package error in Controller > Textfield Guests
@@ -242,7 +361,35 @@ public class Controller {
      *
      * @param
      */
-    public void initialize() throws SQLException {
+
+    private static boolean netIsAvailable() {
+        try {
+            final URL url = new URL("127.0.0.1:3306");
+            final URLConnection conn = url.openConnection();
+            conn.connect();
+            conn.getInputStream().close();
+            return true;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
+    public void initialize() throws SQLException, ParseException {
+        BackupScheduler.backupScheduler();
+        ChangeListener<String> textFieldListener = (observable, oldValue, newValue) -> {
+            connectBtn.setLayoutX(scrW - 95);
+
+
+        };
+//        GanttChartSample gc = new GanttChartSample();
+//        gc.calcChart();
+
+        guest_country.textProperty().addListener(textFieldListener);
+        //textFieldListener.changed(null, null, guest_country.getText());
+
         guest_gridPane.setOpacity(0.5);
         guest_firstName.setEditable(false);
         guest_lastName.setEditable(false);
@@ -255,7 +402,7 @@ public class Controller {
         guest_phoneNumber.setEditable(false);
         guest_zipCode.setEditable(false);
 
-        listGuest = HotelfxAccess.getInstance().getAllGuests();
+        listGuest = HotelfxAccess.getAllGuests();
 
         /* sql queries for columns headers*/
         String guestColumnsSQL = "SELECT * FROM guests";
@@ -378,7 +525,3 @@ public class Controller {
         this.listGuest = listGuest;
     }
 }
-
-
-
-
