@@ -28,18 +28,18 @@
                 </padding>
 
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="0"
-                       GridPane.columnSpan="2" text="Guest Details" GridPane.halignment="CENTER"/>
+                       GridPane.columnSpan="2" text="Booking Details" GridPane.halignment="CENTER"/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="1"
-                       GridPane.halignment="RIGHT" text="First name: "/>
+                       GridPane.halignment="RIGHT" text="Start date: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="2"
-                       GridPane.halignment="RIGHT" text="Last name: "/>
+                       GridPane.halignment="RIGHT" text="End date: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="3"
-                       GridPane.halignment="RIGHT" text="Gender: "/>
+                       GridPane.halignment="RIGHT" text="Guest ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="4"
-                       GridPane.halignment="RIGHT" text="Address: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
-                       GridPane.halignment="RIGHT" text="State: "/>
+                       GridPane.halignment="RIGHT" text="Agent ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="5"
+                       GridPane.halignment="RIGHT" text="Hotel ID: "/>
+                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
                        GridPane.halignment="RIGHT" text="City: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="7"
                        GridPane.halignment="RIGHT" text="Zip Code: "/>
@@ -86,7 +86,7 @@
             <padding>
                 <Insets left="30" top="30" right="30" bottom="30"/>
             </padding>
-            <TableView fx:id="guest_tableView" minWidth="800" maxHeight="320"/>
+            <TableView fx:id="bookings_tableView" minWidth="800" maxHeight="320"/>
             <TableView fx:id="room_tableView" minWidth="800" maxHeight="320"/>
         </VBox>
     </center>

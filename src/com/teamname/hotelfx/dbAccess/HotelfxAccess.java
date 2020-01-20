@@ -4,6 +4,10 @@ package com.teamname.hotelfx.dbAccess;
 import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.Room;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -123,6 +127,21 @@ public class HotelfxAccess {
         return list;
     }
 
+    public static List<String> getAllHotels() throws SQLException {
+        String sql = "SELECT hotelName FROM hotels ORDER BY hotelID";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<String> list = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            String hotelName = rs.getString("hotelName");
+            list.add(hotelName);
+        }
+
+        pstmnt.close();
+        return list;
+    }
+
     public static List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
 //        String sql = "SELECT * FROM " + tableName;
@@ -137,19 +156,32 @@ public class HotelfxAccess {
         return list;
     }
 
-    public static List<String> getAllHotels() throws SQLException {
-        String sql = "SELECT hotelName FROM hotels ORDER BY hotelID";
-        pstmnt = conn.prepareStatement(sql);
-        ResultSet rs = pstmnt.executeQuery();
-        List<String> list = FXCollections.observableArrayList();
 
-        while (rs.next()) {
-            String hotelName = rs.getString("hotelName");
-            list.add(hotelName);
+    public static void addColumnsToTable(List<String> columnNames, TableView tableView) {
+        for (String columnName : columnNames) {
+            TableColumn<ObservableList<String>, String> column = new TableColumn<>(
+                    columnName
+            );
+            column.setCellValueFactory(new PropertyValueFactory<>(columnName));
+
+            if (tableView.getId().equals("guest_tableView")) { /* adjusts individual column width*/
+                switch (column.getText()) {
+                    case "gender":
+                        column.prefWidthProperty().bind(tableView.widthProperty().divide(29));
+                        break;
+                    case "address":
+                    case "emailAddress":
+                        column.prefWidthProperty().bind(tableView.widthProperty().divide(8.5));
+                        break;
+                    default:
+                        column.prefWidthProperty().bind(tableView.widthProperty().divide(11));
+                        break;
+                }
+            } else {
+                column.prefWidthProperty().bind(tableView.widthProperty().divide(6));
+            }
+            tableView.getColumns().add(column);
         }
-
-        pstmnt.close();
-        return list;
     }
 
     public static HotelfxAccess getInstance() {

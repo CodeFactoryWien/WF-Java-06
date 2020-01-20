@@ -14,30 +14,30 @@ public class Booking {
 //    public IntegerProperty bookingIDProperty(){
 //        return bookingID;
 //    }
-    private final StringProperty booking_startDate = new SimpleStringProperty(this, "booking_startDate");
-    public StringProperty booking_startDateProperty(){
-        return booking_startDate;
+    private final StringProperty startDate = new SimpleStringProperty(this, "startDate");
+    public StringProperty startDateProperty(){
+        return startDate;
     }
-    private final StringProperty booking_endDate = new SimpleStringProperty(this, "booking_endDate");
-    public StringProperty booking_endDateProperty(){
-        return booking_endDate;
+    private final StringProperty endDate = new SimpleStringProperty(this, "endDate");
+    public StringProperty endDateProperty(){
+        return endDate;
     }
-    private final IntegerProperty booking_guestID = new SimpleIntegerProperty(this, "booking_guestID");
-    public IntegerProperty booking_guestIDProperty(){
-        return booking_guestID;
+    private final IntegerProperty guestID = new SimpleIntegerProperty(this, "guestID");
+    public IntegerProperty guestIDProperty(){
+        return guestID;
     }
-    private final IntegerProperty booking_agentID = new SimpleIntegerProperty(this, "booking_agentID");
-    public IntegerProperty booking_agentIDProperty(){
-        return booking_agentID;
+    private final IntegerProperty agentID = new SimpleIntegerProperty(this, "agentID");
+    public IntegerProperty agentIDProperty(){
+        return agentID;
     }
-//    private final IntegerProperty booking_statusID = new SimpleIntegerProperty(this, "booking_statusID");
-//    public IntegerProperty booking_statusIDProperty(){
-//        return booking_statusID;
+//    private final IntegerProperty statusID = new SimpleIntegerProperty(this, "statusID");
+//    public IntegerProperty statusIDProperty(){
+//        return statusID;
 //    }
-//    private final IntegerProperty booking_hotelID = new SimpleIntegerProperty(this, "booking_hotelID");
-//    public IntegerProperty booking_hotelIDProperty(){
-//        return booking_hotelID;
-//    }
+    private final IntegerProperty hotelID = new SimpleIntegerProperty(this, "hotelID");
+    public IntegerProperty hotelIDProperty(){
+        return hotelID;
+    }
     private List<Integer> roomCount = new ArrayList<>();
     public int roomProperty(){
         return  roomCount.size();
@@ -45,73 +45,49 @@ public class Booking {
 
 
 
-    public Booking(String booking_startDate, String booking_endDate,
-                   int booking_guestID, int booking_agentID) {
+    public Booking(String startDate, String endDate,
+                   int guestID, int agentID, int hotelID) {
 
 //        setBookingID(bookingID);
-        setBooking_startDate(booking_startDate);
-        setBooking_endDate(booking_endDate);
-        setBooking_guestID(booking_guestID);
-        setBooking_agentID(booking_agentID);
-//        setBooking_statusID(booking_statusID);
-//        setBooking_hotelID(booking_hotelID);
+        setStartDate(startDate);
+        setEndDate(endDate);
+        setGuestID(guestID);
+        setAgentID(agentID);
+//        setstatusID(statusID);
+        setHotelID(hotelID);
     }
 
-//    public int getBookingID() {
-//        return bookingID.get();
-//    }
-//
-//    public void setBookingID(int bookingID) {
-//        this.bookingID.set(bookingID);
-//    }
-
-    public String getBooking_startDate() {
-        return booking_startDate.get();
+    public String getStartDate() {
+        return startDate.get();
     }
 
-    public void setBooking_startDate(String booking_startDate) {
-        this.booking_startDate.set(booking_startDate);
+    public void setStartDate(String startDate) {
+        this.startDate.set(startDate);
     }
 
-    public String getBooking_endDate() {
-        return booking_endDate.get();
+    public String getEndDate() {
+        return endDate.get();
     }
 
-    public void setBooking_endDate(String booking_endDate) {
-        this.booking_endDate.set(booking_endDate);
+    public void setEndDate(String endDate) {
+        this.endDate.set(endDate);
     }
 
-    public int getBooking_guestID() {
-        return booking_guestID.get();
+    public int getGuestID() {
+        return guestID.get();
     }
 
-    public void setBooking_guestID(int booking_guestID) {
-        this.booking_guestID.set(booking_guestID);
+    public void setGuestID(int guestID) {
+        this.guestID.set(guestID);
     }
 
-    public int getBooking_agentID() {
-        return booking_agentID.get();
+    public int getAgentID() {
+        return agentID.get();
     }
 
-    public void setBooking_agentID(int booking_agentID) {
-        this.booking_agentID.set(booking_agentID);
+    public void setAgentID(int agentID) {
+        this.agentID.set(agentID);
     }
-
-//    public int getBooking_statusID() {
-//        return booking_statusID.get();
-//    }
-//
-//    public void setBooking_statusID(int booking_statusID) {
-//        this.booking_statusID.set(booking_statusID);
-//    }
-
-//    public int getBooking_hotelID() {
-//        return booking_hotelID.get();
-//    }
-//
-//    public void setBooking_hotelID(int booking_hotelID) {
-//        this.booking_hotelID.set(booking_hotelID);
-//    }
 
     public List<Integer> getRoomCount() {
         return roomCount;
@@ -119,6 +95,14 @@ public class Booking {
 
     public void setRoomCount(List<Integer> roomCount) {
         this.roomCount = roomCount;
+    }
+
+    public int getHotelID() {
+        return hotelID.get();
+    }
+
+    public void setHotelID(int hotelID) {
+        this.hotelID.set(hotelID);
     }
 }
 

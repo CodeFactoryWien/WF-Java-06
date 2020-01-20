@@ -1,5 +1,6 @@
 package com.teamname.hotelfx;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import com.teamname.hotelfx.controller.ChartTableController;
 import com.teamname.hotelfx.controller.CheckInController;
 import com.teamname.hotelfx.data.*;
@@ -249,8 +250,8 @@ public class Controller {
                     int guestId = guestRepository.saveGuest(guest);
                     if (guestId > 0) {
                         this.alert("Save", "Successful!", Alert.AlertType.INFORMATION);
-                        guest_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllGuests());
-                        listGuest = HotelfxAccess.getInstance().getAllGuests();
+                        guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
+                        listGuest = HotelfxAccess.getAllGuests();
                         guest_tableView.getSelectionModel().selectLast();
                     } else {
                         this.alert("Error", "Failed!", Alert.AlertType.ERROR);
@@ -287,8 +288,9 @@ public class Controller {
         }
 
         if (filledOut) {
+            String hotelName = textFieldData.get("hotelid");
             Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
-                    Integer.parseInt(textFieldData.get("guestID")), 1);
+                    Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
             listBooking.add(booking);
 
             List<Integer> list = booking.getRoomCount();
@@ -299,7 +301,6 @@ public class Controller {
         }
 
     }
-
 
     public void alert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -332,6 +333,7 @@ public class Controller {
                 String tempId = (room_id.getText().equals("")) ? "0" : room_id.getText().trim();
                 textFieldData.put("roomID", tempId);
                 textFieldData.put("guestID", guest_ID.getText().trim());
+                textFieldData.put("hotelID", String.valueOf(hotelComboBox.getSelectionModel().getSelectedIndex() + 1));
                 textFieldData.put("startDate", String.valueOf(startDatePicker.getValue()));
                 textFieldData.put("endDate", String.valueOf(endDatePicker.getValue()));
                 break;
@@ -345,7 +347,7 @@ public class Controller {
      * @param
      */
     @FXML
-    protected void clearTextFields(GridPane gridpane) {
+    private void clearTextFields(GridPane gridpane) {
 
         for (Node node : gridpane.getChildren()) {
             //System.out.println("Id: " + node.getId());
@@ -479,11 +481,11 @@ public class Controller {
 
 
         /* add column headers to tableViews*/
-        addColumnsToTable(HotelfxAccess.getInstance().getColumnNames(guestColumnsSQL), guest_tableView);
-        addColumnsToTable(HotelfxAccess.getInstance().getColumnNames(roomsColumnsSQL), room_tableView);
+        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
+        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
         /* add guests data to guest tableView*/
-        guest_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllGuests());
+        guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
 
         /*add change listeners to tableViews*/
         guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
@@ -494,7 +496,7 @@ public class Controller {
         );
 
         /*add hotels form database to chotel omboBox*/
-        hotelComboBox.getItems().setAll(HotelfxAccess.getInstance().getAllHotels());
+        hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
 
         /*add eventlistener to hotel Combobox to change shown rooms in tableView based on selected hotel*/
         hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
@@ -529,29 +531,7 @@ public class Controller {
 
     }
 
-    public void addColumnsToTable(List<String> columnNames, TableView tableView) {
-        for (int i = 0; i < columnNames.size(); i++) {
-            TableColumn<ObservableList<String>, String> column = new TableColumn<>(
-                    columnNames.get(i)
-            );
-            column.setCellValueFactory(new PropertyValueFactory<>(columnNames.get(i)));
 
-            if (tableView == guest_tableView) { /* adjusts individual column width*/
-                if (column.getText().equals("gender")) {
-                    column.prefWidthProperty().bind(tableView.widthProperty().divide(29));
-                } else if (column.getText().equals("address")) {
-                    column.prefWidthProperty().bind(tableView.widthProperty().divide(8.5));
-                } else if (column.getText().equals("emailAddress")) {
-                    column.prefWidthProperty().bind(tableView.widthProperty().divide(8.5));
-                } else {
-                    column.prefWidthProperty().bind(tableView.widthProperty().divide(11));
-                }
-            } else {
-                column.prefWidthProperty().bind(tableView.widthProperty().divide(6));
-            }
-            tableView.getColumns().add(column);
-        }
-    }
 
     private class ListSelectChangeListener implements ChangeListener<Number> {
         private TableView tableView;
