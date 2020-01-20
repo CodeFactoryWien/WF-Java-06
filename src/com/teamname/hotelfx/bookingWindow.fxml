@@ -110,6 +110,9 @@
                                     </items>
                                 </ComboBox>
 
+                                <TextField fx:id="room_id" visible="false" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
+
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Room number: "/>
                                 <TextField fx:id="room_number" GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            GridPane.halignment="RIGHT"/>

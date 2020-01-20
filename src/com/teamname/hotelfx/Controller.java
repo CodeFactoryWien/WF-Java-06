@@ -27,6 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import java.util.logging.Logger;
 public class Controller {
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
     private GuestSave guestRepository = new GuestSave();
+    private HashMap<String, String> textFieldData;
 
     private boolean toggleState;
     @FXML
@@ -64,6 +66,8 @@ public class Controller {
     @FXML
     public Button guest_clearBtn;
     @FXML
+    public TextField room_id;
+    @FXML
     public TextField room_number;
     @FXML
     public TextField room_floor;
@@ -89,7 +93,6 @@ public class Controller {
     private TableView<Guest> guest_tableView;
     @FXML
     private TableView<Room> room_tableView;
-
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -102,7 +105,6 @@ public class Controller {
     private ToggleButton connectButton;
     @FXML
     private ToggleButton connectBtn;
-
     @FXML
     private Label labelConnect;
 
@@ -218,28 +220,30 @@ public class Controller {
     @FXML
     public void saveTextFieldsGuests() {
 
-        String tempID = guest_ID.getText();
-        int guestID = (tempID.equals("")) ? 0 : Integer.parseInt(guest_ID.getText().trim());
-        String firstName = guest_firstName.getText().trim();
-        String lastName = guest_lastName.getText().trim();
-        String address = guest_address.getText().trim();
-        String city = guest_city.getText();
-        String state = guest_state.getText().trim();
-        String zipCode = guest_zipCode.getText().trim();
-        String country = guest_country.getText().trim();
-        String phoneNumber = guest_phoneNumber.getText();
-        String emailAddress = guest_email.getText().trim();
-        String gender = guest_gender.getText().trim();
+        getTextFieldData("guest");
 
-        if (!StringPool.BLANK.equals(firstName) && !StringPool.BLANK.equals(lastName)
-                && !StringPool.BLANK.equals(city) && !StringPool.BLANK.equals(state)
-                && !StringPool.BLANK.equals(zipCode) && !StringPool.BLANK.equals(country)
-                && !StringPool.BLANK.equals(phoneNumber) && !StringPool.BLANK.equals(emailAddress)
-                && !StringPool.BLANK.equals(gender)
-        ) {
+        int c = 1;
+        boolean filledOut = false;
+        for (String i : textFieldData.values()) {
+
+            if (c == textFieldData.size()) {
+                filledOut = true;
+            }else if(!StringPool.BLANK.equals(i)){
+                c++;
+            }
+            else {
+                this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
+                break;
+            }
+        }
+
+        if(filledOut) {
             try {
-                if (!guestRepository.guestExists(guestID)) {
-                    Guest guest = new Guest(guestID, firstName, lastName, address, city, state, zipCode, country, phoneNumber, emailAddress, gender);
+                if (!guestRepository.guestExists(Integer.parseInt(textFieldData.get("id")))) {
+                    Guest guest = new Guest(Integer.parseInt(textFieldData.get("id")), textFieldData.get("firstName"), textFieldData.get("lastName"),
+                            textFieldData.get("address"), textFieldData.get("city"), textFieldData.get("state"),
+                            textFieldData.get("zipCode"), textFieldData.get("country"), textFieldData.get("phoneNumber"),
+                            textFieldData.get("emailAddress"), textFieldData.get("gender"));
                     int guestId = guestRepository.saveGuest(guest);
                     if (guestId > 0) {
                         this.alert("Save", "Successful!", Alert.AlertType.INFORMATION);
@@ -256,11 +260,8 @@ public class Controller {
             } catch (Exception exception) {
                 logger.log(Level.SEVERE, exception.getMessage());
             }
-        } else {
-            this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
         }
-
-
+        
     }
 
 
@@ -271,6 +272,37 @@ public class Controller {
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
+
+    public void getTextFieldData(String dataName){
+        textFieldData = new HashMap<>();
+        switch(dataName) {
+            case ("guest"): {
+                String tempId = (guest_ID.getText().equals("")) ? "0" : guest_ID.getText().trim();
+                textFieldData.put("id", tempId);
+                textFieldData.put("firstName",guest_firstName.getText().trim());
+                textFieldData.put("lastName",guest_lastName.getText().trim());
+                textFieldData.put("address",guest_address.getText().trim());
+                textFieldData.put("city",guest_city.getText());
+                textFieldData.put("state",guest_state.getText().trim());
+                textFieldData.put("zipCode",guest_zipCode.getText().trim());
+                textFieldData.put("country",guest_country.getText().trim());
+                textFieldData.put("phoneNumber",guest_phoneNumber.getText());
+                textFieldData.put("emailAddress",guest_email.getText().trim());
+                textFieldData.put("gender",guest_gender.getText().trim());
+                break;
+            }
+            case ("room"): {
+                String tempId = (room_id.getText().equals("")) ? "0" : room_id.getText().trim();
+                textFieldData.put("id", tempId);
+                textFieldData.put("roomNumber",room_number.getText().trim());
+                textFieldData.put("roomFloor",room_floor.getText().trim());
+                textFieldData.put("description",room_description.getText().trim());
+                textFieldData.put("startDate",String.valueOf(startDatePicker.getValue()));
+                textFieldData.put("endDate",String.valueOf(endDatePicker.getValue()));
+                break;
+            }
+        }
     }
 
 
