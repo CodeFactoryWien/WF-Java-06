@@ -1,0 +1,6 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane fx:controller="com.teamname.hotelfx.controller.ChartTableController" xmlns:fx="http://javafx.com/fxml">
+        <Label text="2"/>
+</AnchorPane>

@@ -90,7 +90,7 @@
                                            GridPane.halignment="RIGHT"/>
 
                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
-                                    <Button fx:id="guest_saveBtn" onAction="#saveTextFieldsGuests" text="Save"/>
+                                    <Button fx:id="guest_saveBtn" text="Save"/>
                                     <Button fx:id="guest_clearBtn" text="Clear"/>
                                 </HBox>
                             </GridPane>
@@ -150,14 +150,15 @@
                 </BorderPane>
             </Tab>
 
-            <Tab text="Tab 2">
-                <AnchorPane fx:id="chartTable">
-
-                </AnchorPane>
+            <Tab text="Tab 2" fx:id="checkInTab">
+               <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
             </Tab>
 
-            <Tab text="Tab 3" fx:id="bookingTable">
-               <fx:include source="fxml/bookingTableWindow.fxml" fx:id="bookingTableTab"/>
+            <Tab text="Tab 3">
+                <fx:include source="fxml/chartTable.fxml" fx:id="chartTable"/>
+<!--                <AnchorPane fx:id="chartTableAnchor">-->
+
+<!--                </AnchorPane>-->
             </Tab>
 
         </TabPane>

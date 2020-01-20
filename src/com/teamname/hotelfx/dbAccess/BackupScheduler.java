@@ -8,11 +8,12 @@ public class BackupScheduler {
     public static void backupScheduler() {
 
         Task<Void> task = new Task<Void>() {
-            int maxCount = 3600000;
+            int maxCount = 10;
 
             @Override
             protected Void call() throws Exception {
                 for (int i = 1; i <= maxCount; i++) {
+                    maxCount++;
                     Thread.sleep(3600000); // Backupcycle -- 1h --
                     final int count = i;
                     Platform.runLater(new Runnable() {
