@@ -25,6 +25,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.show();
+
+//        ChartTableController ct = new ChartTableController();
+//        ct.chart_tableView();
     }
 
 

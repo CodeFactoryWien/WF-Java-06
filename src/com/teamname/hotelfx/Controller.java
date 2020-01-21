@@ -1,6 +1,5 @@
 package com.teamname.hotelfx;
 
-import com.teamname.hotelfx.controller.ChartTableController;
 import com.teamname.hotelfx.controller.CheckInController;
 import com.teamname.hotelfx.data.*;
 import com.teamname.hotelfx.dbAccess.BackupScheduler;
@@ -143,7 +142,7 @@ public class Controller {
 
         if (nightBtn.isSelected()) {
             blend.setTopInput(topInput);
-
+            stage.setAlwaysOnTop(true);
             nightBtn.setText("NIGHTMODE ON");
             stage.setTitle("Hotel FX Night");
             blend.setMode(BlendMode.DIFFERENCE);
