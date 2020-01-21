@@ -29,8 +29,8 @@
         </MenuBar>
     </top>
     <center>
-        <TabPane>
-            <Tab text="Tab 1">
+        <TabPane fx:id="tabPane">
+            <Tab text="Tab 1" fx:id="bookingWindowTab">
                 <BorderPane fx:id="borderPane">
                     <left>
                         <VBox spacing="0">
@@ -154,7 +154,7 @@
                 <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
             </Tab>
 
-            <Tab text="Tab 3">
+            <Tab text="Tab 3" fx:id="chartTableTab">
                 <fx:include source="fxml/chartTable.fxml" fx:id="chartTable"/>
                 <!--                <AnchorPane fx:id="chartTableAnchor">-->
 
