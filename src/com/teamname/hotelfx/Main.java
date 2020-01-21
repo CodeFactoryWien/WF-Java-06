@@ -13,6 +13,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // improve rendering on larger screens
+        System.setProperty("prism.lcdtext", "false");
+        System.setProperty("prism.text", "t2k");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("bookingWindow.fxml"));
         Parent root = loader.load();
