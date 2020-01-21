@@ -1,8 +1,8 @@
-
+/*
 .conLabel {
     -fx-background-color: green;
 }
-
+*/
 .status-0 {
     -fx-background-color: #4D2C37;
 }
@@ -40,13 +40,13 @@
 
 }
 
-/*
-.root {
+
+.xxx {
     //css instructions here
+    -fx-background-color: #000000;
     -fx-blend-mode:difference;
-    -fx-opacity:1;
+    -fx-opacity:0.9;
 }
 .text {
-    -fx-fill: black;
+    -fx-font-family: "Ubuntu Light";
 }
-*/

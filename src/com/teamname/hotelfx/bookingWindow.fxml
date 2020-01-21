@@ -151,14 +151,14 @@
             </Tab>
 
             <Tab text="Tab 2" fx:id="checkInTab">
-               <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
+                <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
             </Tab>
 
             <Tab text="Tab 3">
                 <fx:include source="fxml/chartTable.fxml" fx:id="chartTable"/>
-<!--                <AnchorPane fx:id="chartTableAnchor">-->
+                <!--                <AnchorPane fx:id="chartTableAnchor">-->
 
-<!--                </AnchorPane>-->
+                <!--                </AnchorPane>-->
             </Tab>
 
         </TabPane>
@@ -166,7 +166,8 @@
     <Pane>
         <Label fx:id="labelConnect" layoutX="155.0" layoutY="0" prefHeight="25.0" prefWidth="3000.0"
                styleClass="conLabel"/>
-        <ToggleButton fx:id="connectBtn" onAction="#connectdb" mnemonicParsing="false" prefHeight="18.0"
-                      prefWidth="95.0" text="NIGHTMODE"/>
+        <ToggleButton fx:id="nightBtn" onAction="#nightMode" minWidth="115" mnemonicParsing="false" prefHeight="10.0"
+                      style="-fx-font-size:10.5"
+                      prefWidth="115" text="NIGHTMODE"/>
     </Pane>
 </BorderPane>
