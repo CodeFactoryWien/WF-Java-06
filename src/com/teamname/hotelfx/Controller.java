@@ -122,7 +122,7 @@ public class Controller {
 
     private List<Guest> listGuest = FXCollections.observableArrayList();
     private List<Room> listRoom = FXCollections.observableArrayList();
-    private List<Booking> listBooking = FXCollections.observableArrayList();
+    public List<Booking> listBooking = FXCollections.observableArrayList();
     double scrW = Screen.getPrimary().getVisualBounds().getWidth();
     double scrH = Screen.getPrimary().getVisualBounds().getHeight();
 
@@ -267,7 +267,6 @@ public class Controller {
 
         int c = 1;
         boolean filledOut = false;
-        System.out.println(textFieldData);
         for (String i : textFieldData.values()) {
             if (c == textFieldData.size()) {
                 filledOut = true;
@@ -286,13 +285,18 @@ public class Controller {
             String hotelName = textFieldData.get("hotelid");
             Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
                     Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
-            listBooking.add(booking);
+
+
+//            listBooking.add(booking);
 
             List<Integer> list = booking.getRoomCount();
             list.add(Integer.parseInt(textFieldData.get("roomID")));
             booking.setRoomCount(list);
-            System.out.println(list);
-            System.out.println(listBooking);
+
+
+            BookingList.getInstance().getBookingList().add(booking);
+           CheckInController cc = new CheckInController();
+            checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
         }
 
     }

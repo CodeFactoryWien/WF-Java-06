@@ -87,7 +87,6 @@
                 <Insets left="30" top="30" right="30" bottom="30"/>
             </padding>
             <TableView fx:id="bookings_tableView" minWidth="800" maxHeight="320"/>
-            <TableView fx:id="room_tableView" minWidth="800" maxHeight="320"/>
         </VBox>
     </center>
 
