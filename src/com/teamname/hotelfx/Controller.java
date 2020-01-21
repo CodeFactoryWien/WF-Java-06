@@ -282,21 +282,29 @@ public class Controller {
         }
 
         if (filledOut) {
-            String hotelName = textFieldData.get("hotelid");
-            Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
-                    Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
+            if (checkIfBookingExists(room_tableView.getSelectionModel().getSelectedItem().getRoomID())) {
+
+                String hotelName = textFieldData.get("hotelid");
+                Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
+                        Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
 
 
 //            listBooking.add(booking);
 
-            List<Integer> list = booking.getRoomCount();
-            list.add(Integer.parseInt(textFieldData.get("roomID")));
-            booking.setRoomCount(list);
+                List<Integer> list = booking.getRoomCount();
+                list.add(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
+                booking.setRoomCount(list);
 
 
-            BookingList.getInstance().getBookingList().add(booking);
-           CheckInController cc = new CheckInController();
-            checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+                BookingList.getInstance().getBookingList().add(booking);
+                CheckInController cc = new CheckInController();
+                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+            }
+        }else{
+            Booking b = loopBookings(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
+            List<Integer> list = b.getRoomCount();
+            list.add(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
+            b.setRoomCount(list);
         }
 
     }
@@ -338,6 +346,31 @@ public class Controller {
                 break;
             }
         }
+    }
+
+    public boolean checkIfBookingExists(int guestID){
+        boolean bExists = true;
+        for(Booking booking: BookingList.getInstance().getBookingList()){
+            if(booking.getGuestID() == guestID){}
+            else{
+                bExists = false;
+            }
+        }
+        return bExists;
+    }
+
+    public Booking loopBookings (int guestID){
+        System.out.println("loopBookings");
+        System.out.println(guestID);
+        Booking b = null;
+        for(Booking booking: BookingList.getInstance().getBookingList()){
+            if(booking.getGuestID() == guestID){
+                b = booking;
+                System.out.println(b);
+                System.out.println(booking);
+            }
+        }
+        return b;
     }
 
 

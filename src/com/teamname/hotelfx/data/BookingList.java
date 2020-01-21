@@ -16,10 +16,6 @@ public class BookingList {
         return bookingList;
     }
 
-    public void setBookingList(ObservableList<Booking> bookingList) {
-        this.bookingList = bookingList;
-    }
-
     public static BookingList getInstance() {
         return instance;
     }

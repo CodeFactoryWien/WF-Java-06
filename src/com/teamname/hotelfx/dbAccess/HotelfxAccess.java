@@ -142,6 +142,31 @@ public class HotelfxAccess {
         return list;
     }
 
+    public static Room getRoomsByID(int roomID) throws SQLException {
+        String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
+                "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+                "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
+                "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID " +
+                "WHERE rooms.roomID = " + roomID;
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        Room room = null;
+        while (rs.next()) {
+            int id = rs.getInt("roomID");
+            String number = rs.getString("roomNumber");
+            int floor = rs.getInt("floor");
+            String description = rs.getString("description");
+            String status = rs.getString("roomStatus");
+            String type = rs.getString("roomType");
+            String hotel = rs.getString("hotelName");
+
+            room = new Room(id, floor, number, description, status, type, hotel);
+        }
+
+        pstmnt.close();
+        return room;
+    }
+
     public static List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
 //        String sql = "SELECT * FROM " + tableName;

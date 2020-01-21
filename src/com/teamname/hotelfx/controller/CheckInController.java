@@ -3,8 +3,10 @@ package com.teamname.hotelfx.controller;
 import com.teamname.hotelfx.Controller;
 import com.teamname.hotelfx.data.Booking;
 import com.teamname.hotelfx.data.BookingList;
+import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 
@@ -15,8 +17,12 @@ import java.util.List;
 
 public class CheckInController {
     @FXML
+    public TableView rooms_booking_tableView;
+    @FXML
     private TableView bookings_tableView;
+
     private List<String> bookingTableColumnNames = new ArrayList<>();
+    private List<String> roomTableColumnNames = new ArrayList<>();
 
 
     public void initialize() throws SQLException, ParseException {
@@ -26,12 +32,31 @@ public class CheckInController {
         bookingTableColumnNames.add("agentID");
         bookingTableColumnNames.add("hotelID");
 
-        HotelfxAccess.addColumnsToTable(bookingTableColumnNames, bookings_tableView);
+        roomTableColumnNames.add("roomNumber");
+        roomTableColumnNames.add("floor");
+        roomTableColumnNames.add("description");
+        roomTableColumnNames.add("roomType");
+        roomTableColumnNames.add("hotelName");
 
-        bookings_tableView.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
-            if (newHotel != null) {
-                bookings_tableView.getItems().setAll(BookingList.getInstance().getBookingList());
-                bookings_tableView.getSelectionModel().selectFirst();
+        HotelfxAccess.addColumnsToTable(bookingTableColumnNames, bookings_tableView);
+        HotelfxAccess.addColumnsToTable(roomTableColumnNames, rooms_booking_tableView);
+
+
+        bookings_tableView.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Booking>) (selected, oldBooking, newBooking) -> {
+            if (newBooking != null) {
+                System.out.println(bookings_tableView.getSelectionModel().getSelectedIndex());
+                List<Integer> rooms = newBooking.getRoomCount();
+                List<Room> roomList = FXCollections.observableArrayList();
+                for (Integer room : rooms) {
+                    try {
+                        roomList.add(HotelfxAccess.getRoomsByID(room));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                rooms_booking_tableView.getItems().setAll(roomList);
+
             }
         });
     }
