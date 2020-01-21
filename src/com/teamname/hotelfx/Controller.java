@@ -1,6 +1,5 @@
 package com.teamname.hotelfx;
 
-import com.teamname.hotelfx.controller.ChartTableController;
 import com.teamname.hotelfx.controller.CheckInController;
 import com.teamname.hotelfx.data.*;
 import com.teamname.hotelfx.dbAccess.BackupScheduler;
@@ -40,6 +39,8 @@ public class Controller {
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
     private GuestSave guestRepository = new GuestSave();
     private HashMap<String, String> textFieldData;
+    String glass = "";
+    String night = "";
 
     private boolean toggleState;
     @FXML
@@ -92,8 +93,8 @@ public class Controller {
     public AnchorPane chartTableAnchor;
     @FXML
     private CheckInController checkInController;
-    @FXML
-    private ChartTableController chartTableController;
+    //    @FXML
+//    private ChartTableController chartTableController;
     @FXML
     private ComboBox hotelComboBox;
     @FXML
@@ -114,6 +115,8 @@ public class Controller {
     private ToggleButton connectButton;
     @FXML
     private ToggleButton nightBtn;
+    @FXML
+    private ToggleButton glassBtn;
     @FXML
     private ToggleButton connectBtn;
     @FXML
@@ -136,16 +139,18 @@ public class Controller {
     public void nightMode(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Hotel FX");
+
         Parent stageRoot = stage.getScene().getRoot();
         Blend blend = new Blend();
         blend.setMode(BlendMode.DIFFERENCE);
         ColorInput topInput = new ColorInput(0, 0, scrW, scrH, Color.WHITE);
 
         if (nightBtn.isSelected()) {
+            night = " NIGHT ";
             blend.setTopInput(topInput);
-
+            stage.setAlwaysOnTop(true);
             nightBtn.setText("NIGHTMODE ON");
-            stage.setTitle("Hotel FX Night");
+            stage.setTitle(stage.getTitle() + glass + night);
             blend.setMode(BlendMode.DIFFERENCE);
             stageRoot.setEffect(blend);
             stageRoot.setOpacity(0.9);
@@ -155,12 +160,13 @@ public class Controller {
             }
 
         } else {
+            night = "";
             System.out.println("DB Conn closed");
             nightBtn.setText("NIGHTMODE OFF");
-            stage.setTitle("Hotel FX");
             blend.setMode(BlendMode.SRC_OVER);
             stageRoot.setEffect(blend);
             stageRoot.setOpacity(1);
+            stage.setTitle(stage.getTitle() + glass + night);
             toggleButton.setStyle("-fx-background-color: rgb(0,127,0);");
             if (toggleButton.getText().equals("OFF")) {
                 toggleButton.setStyle("-fx-background-color: grey");
@@ -170,6 +176,28 @@ public class Controller {
 
         }
     }
+
+    @FXML
+    public void glassMode(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Hotel FX");
+
+        if (glassBtn.isSelected()) {
+            glass = " GLASS ";
+            glassBtn.setText("GLASSMODE ON");
+            stage.setTitle(stage.getTitle() + glass + night);
+            stage.setOpacity(0.5);
+
+        } else {
+            glass = "";
+            glassBtn.setText("GLASSMODE OFF");
+            stage.setTitle("Hotel FX");
+            stage.setOpacity(1);
+            stage.setTitle(stage.getTitle() + glass + night);
+        }
+    }
+
+
 
 
     @FXML
@@ -519,8 +547,7 @@ public class Controller {
         BackupScheduler.backupScheduler();
         ChangeListener<String> textFieldListener = (observable, oldValue, newValue) -> {
             nightBtn.setLayoutX(scrW - 115);
-
-
+            glassBtn.setLayoutX(scrW - 232);
         };
 //        GanttChartSample gc = new GanttChartSample();
 //        gc.calcChart();

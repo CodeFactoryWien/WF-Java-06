@@ -26,7 +26,7 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primaryStage.show();
 
-        Controller cc = new Controller();
+
     }
 
 
