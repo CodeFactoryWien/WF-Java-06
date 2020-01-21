@@ -48,5 +48,6 @@
     -fx-opacity:0.9;
 }
 .text {
-    -fx-font-family: "Ubuntu Light";
+    -fx-fill: #000000;
+    -fx-stroke-width: 100px;
 }

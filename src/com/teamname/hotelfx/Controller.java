@@ -135,6 +135,7 @@ public class Controller {
     @FXML
     public void nightMode(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Hotel FX");
         Parent stageRoot = stage.getScene().getRoot();
         Blend blend = new Blend();
         blend.setMode(BlendMode.DIFFERENCE);
@@ -144,6 +145,7 @@ public class Controller {
             blend.setTopInput(topInput);
 
             nightBtn.setText("NIGHTMODE ON");
+            stage.setTitle("Hotel FX Night");
             blend.setMode(BlendMode.DIFFERENCE);
             stageRoot.setEffect(blend);
             stageRoot.setOpacity(0.9);
@@ -155,6 +157,7 @@ public class Controller {
         } else {
             System.out.println("DB Conn closed");
             nightBtn.setText("NIGHTMODE OFF");
+            stage.setTitle("Hotel FX");
             blend.setMode(BlendMode.SRC_OVER);
             stageRoot.setEffect(blend);
             stageRoot.setOpacity(1);
@@ -369,11 +372,29 @@ public class Controller {
         guest_phoneNumber.setEditable(true);
         guest_zipCode.setEditable(true);
 
-        toggleButton.setStyle("-fx-background-color: green;");
+        room_gridPane.setOpacity(1);
+        room_number.setEditable(true);
+        room_floor.setEditable(true);
+        room_description.setEditable(true);
+        startDatePicker.setEditable(true);
+        endDatePicker.setEditable(true);
+        hotelComboBox.setEditable(true);
+
+        if (nightBtn.getText().equals("NIGHTMODE ON") && toggleButton.getText().equals("ON")) {
+            toggleButton.setStyle("-fx-background-color: rgb(0,127,0);");
+        }
+
+
+        if (nightBtn.isSelected()) {
+            toggleButton.setStyle("-fx-background-color: rgb(0,127,0);");
+        } else {
+            toggleButton.setStyle("-fx-background-color: green");
+        }
         toggleButton.setText("ON");
 
         toggleButton.setOnAction(event -> {
             guest_gridPane.setOpacity(1);
+            room_gridPane.setOpacity(1);
             //Call all elements from a specific FXML container
             /*
             for (Node node : guest_gridPane.getChildren()) {
@@ -381,6 +402,8 @@ public class Controller {
             }
             */
             if (toggleButton.isSelected()) {
+
+                guest_gridPane.setOpacity(1);
                 guest_firstName.setEditable(true);
                 guest_lastName.setEditable(true);
                 guest_state.setEditable(true);
@@ -392,7 +415,19 @@ public class Controller {
                 guest_phoneNumber.setEditable(true);
                 guest_zipCode.setEditable(true);
 
-                toggleButton.setStyle("-fx-background-color: green;");
+                room_gridPane.setOpacity(1);
+                room_number.setEditable(true);
+                room_floor.setEditable(true);
+                room_description.setEditable(true);
+                startDatePicker.setEditable(true);
+                endDatePicker.setEditable(true);
+                hotelComboBox.setEditable(true);
+
+                if (nightBtn.isSelected()) {
+                    toggleButton.setStyle("-fx-background-color: rgb(255,127,255);");
+                } else {
+                    toggleButton.setStyle("-fx-background-color: green");
+                }
                 toggleButton.setText("ON");
             } else {
 
@@ -408,14 +443,20 @@ public class Controller {
                 guest_gender.setEditable(false);
                 guest_phoneNumber.setEditable(false);
                 guest_zipCode.setEditable(false);
-                toggleButton.setStyle("-fx-background-color: grey;");
+
+                room_gridPane.setOpacity(0.5);
+                room_number.setEditable(false);
+                room_floor.setEditable(false);
+                room_description.setEditable(false);
+                startDatePicker.setEditable(false);
+                endDatePicker.setEditable(false);
+                hotelComboBox.setEditable(false);
+
+                toggleButton.setStyle("-fx-background-color: grey");
                 toggleButton.setText("OFF");
             }
         });
     }
-
-    ;
-
 
     /*********************************** INITIALIZE *******************************************
      *
