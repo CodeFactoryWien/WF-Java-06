@@ -17,7 +17,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("bookingWindow.fxml"));
         Parent root = loader.load();
         root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
-        primaryStage.getIcons().add(new Image("icon.png"));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ressources/icon.png")));
         primaryStage.setTitle("Hotel FX");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
