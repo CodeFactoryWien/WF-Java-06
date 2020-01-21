@@ -562,11 +562,11 @@ public class Controller {
         }
     }
 
-    public List<Guest> getListGuest() {
-        return listGuest;
+    public List<Booking> getListBooking() {
+        return listBooking;
     }
 
-    public void setListGuest(List<Guest> listGuest) {
-        this.listGuest = listGuest;
+    public void setListBooking(List<Booking> listBooking) {
+        this.listBooking = listBooking;
     }
 }

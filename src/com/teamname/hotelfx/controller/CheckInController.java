@@ -23,5 +23,7 @@ public class CheckInController {
         bookingTableColumnNames.add("hotelID");
 
         HotelfxAccess.addColumnsToTable(bookingTableColumnNames, bookings_tableView);
+        Controller ctrl = new Controller();
+        bookings_tableView.getItems().setAll(ctrl.getListBooking());
     }
 }
