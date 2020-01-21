@@ -26,8 +26,6 @@ hs_err_pid*
 
 .xml
 .idea
-<<<<<<< HEAD
 *.iml
-=======
 *.iml
->>>>>>> 70bf3ea49253292822241c8e851d8c0056eb911b
+*.exe

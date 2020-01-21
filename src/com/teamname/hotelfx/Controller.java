@@ -1,6 +1,5 @@
 package com.teamname.hotelfx;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import com.teamname.hotelfx.controller.ChartTableController;
 import com.teamname.hotelfx.controller.CheckInController;
 import com.teamname.hotelfx.data.*;
@@ -9,17 +8,21 @@ import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -96,6 +99,8 @@ public class Controller {
     @FXML
     private TableView<Guest> guest_tableView;
     @FXML
+    private TableView<Guest> chartTableView;
+    @FXML
     private TableView<Room> room_tableView;
     @FXML
     private BorderPane borderPane;
@@ -107,6 +112,8 @@ public class Controller {
     private ToggleButton toggleButton;
     @FXML
     private ToggleButton connectButton;
+    @FXML
+    private ToggleButton nightBtn;
     @FXML
     private ToggleButton connectBtn;
     @FXML
@@ -126,19 +133,50 @@ public class Controller {
 
 
     @FXML
-    public void labelConnectConnection() {
+    public void nightMode(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent stageRoot = stage.getScene().getRoot();
+        Blend blend = new Blend();
+        blend.setMode(BlendMode.DIFFERENCE);
+        ColorInput topInput = new ColorInput(0, 0, scrW, scrH, Color.WHITE);
+
+        if (nightBtn.isSelected()) {
+            blend.setTopInput(topInput);
+
+            nightBtn.setText("NIGHTMODE ON");
+            blend.setMode(BlendMode.DIFFERENCE);
+            stageRoot.setEffect(blend);
+            stageRoot.setOpacity(0.9);
+            toggleButton.setStyle("-fx-background-color: rgb(255,127,255);");
+            if (toggleButton.getText().equals("OFF")) {
+                toggleButton.setStyle("-fx-background-color: grey");
+            }
+
+        } else {
+            System.out.println("DB Conn closed");
+            nightBtn.setText("NIGHTMODE OFF");
+            blend.setMode(BlendMode.SRC_OVER);
+            stageRoot.setEffect(blend);
+            stageRoot.setOpacity(1);
+            toggleButton.setStyle("-fx-background-color: rgb(0,127,0);");
+            if (toggleButton.getText().equals("OFF")) {
+                toggleButton.setStyle("-fx-background-color: grey");
+            }
+//            labelConnect.setStyle("-fx-background-color: green;");
+//            labelConnect.setText("  Connection to Database closed --");
+
+        }
     }
 
+
     @FXML
-    public void connectdb() {
+    public void dbConnection() {
 
         if (connectBtn.isSelected()) {
             try {
-
-
                 HotelfxAccess.getDBConnection();
                 HotelfxAccess.getInstance().getAllGuests();
-                connectBtn.setText("DISCONNECTED");
+                connectBtn.setText("CONN OFF");
 
 
                 labelConnect.setStyle("-fx-background-color: red;");
@@ -151,7 +189,7 @@ public class Controller {
                     labelConnect.setStyle("-fx-background-color: green;");
                     labelConnect.setText("  Connection to Database established --");
                 }
-                connectBtn.setText("CONNECTED");
+                connectBtn.setText("CONN ON");
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -160,7 +198,7 @@ public class Controller {
             try {
                 HotelfxAccess.getDBConnection().close();
                 System.out.println("DB Conn closed");
-                connectBtn.setText("DISCONNECTED");
+                connectBtn.setText("CONN OFF");
 
                 labelConnect.setStyle("-fx-background-color: grey;");
                 labelConnect.setText("  Connection to Database closed --");
@@ -169,52 +207,6 @@ public class Controller {
             }
 
         }
-    }
-
-
-    @FXML
-    public void dbConnection() {
-
-        connectButton.setOnAction(event -> {
-
-            if (connectButton.isSelected()) {
-                try {
-                    HotelfxAccess.getDBConnection();
-                    HotelfxAccess.getInstance().getAllGuests();
-
-                    connectButton.setText("DISCONNECTED");
-
-
-                    labelConnect.setStyle("-fx-background-color: red;");
-                    labelConnect.setText("  Failed to connect to database --");
-
-                    if (HotelfxAccess.getDBConnection().isClosed()) {
-                        labelConnect.setStyle("-fx-background-color: grey;");
-                        labelConnect.setText("  Connection to Database closed --");
-                    } else {
-                        labelConnect.setStyle("-fx-background-color: green;");
-                        labelConnect.setText("  Connection to Database established --");
-                    }
-                    connectButton.setText("CONNECTED");
-
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            } else {
-                try {
-                    HotelfxAccess.getDBConnection().close();
-                    System.out.println("DB Conn closed");
-                    connectButton.setText("DISCONNECTED");
-
-                    labelConnect.setStyle("-fx-background-color: grey;");
-                    labelConnect.setText("  Connection to Database closed --");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
     }
 
     /************************************* SAVE FEATURE ******************************************
@@ -448,7 +440,7 @@ public class Controller {
     public void initialize() throws SQLException, ParseException {
         BackupScheduler.backupScheduler();
         ChangeListener<String> textFieldListener = (observable, oldValue, newValue) -> {
-            connectBtn.setLayoutX(scrW - 95);
+            nightBtn.setLayoutX(scrW - 115);
 
 
         };
