@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-class chartTable {
+public class ChartTableController {
     @FXML
     private TableView<Booking> tableView = new TableView();
     @FXML
@@ -19,10 +19,6 @@ class chartTable {
     @FXML
     private TableColumn guest_lastName = new TableColumn();
 
-
-    public void initialize() {
-
-    }
 };
 
 

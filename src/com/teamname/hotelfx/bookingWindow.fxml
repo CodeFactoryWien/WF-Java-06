@@ -169,5 +169,8 @@
         <ToggleButton fx:id="nightBtn" onAction="#nightMode" minWidth="115" mnemonicParsing="false" prefHeight="10.0"
                       style="-fx-font-size:10.5"
                       prefWidth="115" text="NIGHTMODE"/>
+        <ToggleButton fx:id="glassBtn" onAction="#glassMode" minWidth="115" mnemonicParsing="false" prefHeight="10.0"
+                      style="-fx-font-size:10.5"
+                      prefWidth="115" text="GLASSMODE"/>
     </Pane>
 </BorderPane>
