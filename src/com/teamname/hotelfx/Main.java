@@ -1,5 +1,4 @@
 package com.teamname.hotelfx;
-
 import com.teamname.hotelfx.dbAccess.Backup;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.application.Application;
@@ -13,20 +12,19 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         // improve rendering on larger screens
         System.setProperty("prism.lcdtext", "false");
         System.setProperty("prism.text", "t2k");
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("bookingWindow.fxml"));
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getResource("bookingWindow.fxml"));
         root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ressources/icon.png")));
         primaryStage.setTitle("Hotel FX");
         primaryStage.setScene(new Scene(root));
+
         primaryStage.setMaximized(true);
         primaryStage.show();
-
-
     }
 
 
@@ -36,11 +34,10 @@ public class Main extends Application {
 
     @Override
     public void init() {
-
         try {
-            HotelfxAccess.getDBConnection();
+
         } catch (Exception e) {
-//           displayException(e);
+//            displayException(e);
         }
     }
 

@@ -534,6 +534,7 @@ public class Controller {
 
 
     public void initialize() throws SQLException, ParseException {
+        HotelfxAccess.getDBConnection();
         BackupScheduler.backupScheduler();
         ChangeListener<String> textFieldListener = (observable, oldValue, newValue) -> {
             nightBtn.setLayoutX(scrW - 115);
@@ -566,27 +567,36 @@ public class Controller {
                 "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
                 "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
 
+        try {
+            /* add column headers to tableViews*/
+            HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
+            HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
-        /* add column headers to tableViews*/
-        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
-        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
+            /* add guests data to guest tableView*/
+            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
 
-        /* add guests data to guest tableView*/
-        guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
+            /*connect in application booking list to check in booking tableView*/
+            checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
 
-        /*connect in application booking list to check in booking tableView*/
-        checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
+            /*add change listeners to tableViews*/
+            guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                    new ListSelectChangeListener(guest_tableView)
+            );
+            room_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                    new ListSelectChangeListener(room_tableView)
+            );
 
-        /*add change listeners to tableViews*/
-        guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
-                new ListSelectChangeListener(guest_tableView)
-        );
-        room_tableView.getSelectionModel().selectedIndexProperty().addListener(
-                new ListSelectChangeListener(room_tableView)
-        );
+            /*add hotels form database to chotel omboBox*/
+            hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
 
-        /*add hotels form database to chotel omboBox*/
-        hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+
+        } catch (Exception ignore) {
+            //
+        }
+
+
+
+
 
 
         /*add eventlistener to hotel Combobox to change shown rooms in tableView based on selected hotel*/
