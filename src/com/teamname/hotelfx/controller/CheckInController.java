@@ -1,26 +1,26 @@
 package com.teamname.hotelfx.controller;
 
 import com.teamname.hotelfx.Controller;
-import com.teamname.hotelfx.data.Booking;
-import com.teamname.hotelfx.data.BookingList;
-import com.teamname.hotelfx.data.Guest;
-import com.teamname.hotelfx.data.Room;
+import com.teamname.hotelfx.data.*;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class CheckInController {
     @FXML
@@ -43,6 +43,10 @@ public class CheckInController {
     public TextField fullPrice;
     @FXML
     public TextArea priceDetails;
+    @FXML
+    public Button booking_saveBtn;
+    @FXML
+    public Button booking_deleteBtn;
     @FXML
     private TableView rooms_booking_tableView;
     @FXML
@@ -94,16 +98,61 @@ public class CheckInController {
                 hotelID.setText(String.valueOf(booking.getHotelID()));
                 try {
                     calculatePrice(newBooking);
-                } catch (SQLException e) {
+                } catch (SQLException | ParseException e) {
                     e.printStackTrace();
                 }
 
             }
         });
+        booking_deleteBtn.setOnAction(event -> {
+            if(bookings_tableView.getItems().size() > 0) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm deletion");
+                alert.setHeaderText("Sure?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (!result.isPresent()) {
+                } else if (result.get() == ButtonType.OK) {
+                    updateTablesAndRemoveLast();
+                }
+            }
+        });
+
+        booking_saveBtn.setOnAction(event -> {
+            if(bookings_tableView.getItems().size() > 0) {
+                try {
+                    int bookingID = HotelfxAccess.saveBooking((Booking) bookings_tableView.getSelectionModel().getSelectedItem());
+                    if (bookingID > 0) {
+                        Booking booking = (Booking) bookings_tableView.getSelectionModel().getSelectedItem();
+                        for(Room room :  booking.getRoomCountList()){
+                            int roomid = HotelfxAccess.saveRoom(room.getRoomID(), bookingID);
+                            if(roomid < 1){
+                                this.alert("Error", "Failed!", Alert.AlertType.ERROR);
+                                break;
+                            }
+                        }
+                        this.alert("Save", "Successful!", Alert.AlertType.INFORMATION);
+                        updateTablesAndRemoveLast();
+                    } else {
+                        this.alert("Error", "Failed!", Alert.AlertType.ERROR);
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public void updateTablesAndRemoveLast(){
+        BookingList.getInstance().getBookingList().remove(bookings_tableView.getSelectionModel().getSelectedIndex());
+        bookings_tableView.getItems().setAll(BookingList.getInstance().getBookingList());
+        rooms_booking_tableView.setItems(null);
+        bookings_tableView.getSelectionModel().selectLast();
     }
 
 
-    public void calculatePrice(Booking booking) throws SQLException {
+    public void calculatePrice(Booking booking) throws SQLException, ParseException {
         priceDetails.clear();
         List<Room> currentRooms = booking.getRoomCountList();
         HashMap<String, Integer> roomTypes = new HashMap<>();
@@ -117,21 +166,42 @@ public class CheckInController {
             }
         }
 
+        int finalPrice = 0;
         for (String roomType: roomTypes.keySet()) {
             if(!priceByRoomType.containsKey(roomType)){
                 priceByRoomType.put(roomType, HotelfxAccess.getPriceByRoomType(roomType));
             }
-                priceDetails.appendText("\n" + roomTypes.get(roomType) + " " + roomType + "  =  " + roomTypes.get(roomType) * priceByRoomType.get(roomType) + "€");
+                int roomPrice = roomTypes.get(roomType) * priceByRoomType.get(roomType);
+                priceDetails.appendText("\n" + roomTypes.get(roomType) + " " + roomType +"("+ priceByRoomType.get(roomType) + ") " + "  =  " + roomPrice + "€");
+                finalPrice += roomPrice;
         }
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDATE = formatter.parse(booking.getStartDate());
+        Date endDATE = formatter.parse(booking.getEndDate());
+
+        long dateDiff = getDateDifference(startDATE, endDATE, TimeUnit.DAYS);
+        String night_nights = (dateDiff > 1)? " nights" : " night";
+        priceDetails.appendText("\n for " + dateDiff + night_nights );
+        finalPrice *= dateDiff;
+
+        fullPrice.setText(finalPrice + "€");
+
     }
 
-    private long getDateDifference(Date date1, Date date2, TimeUnit timeUnit) {
+    public long getDateDifference(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
-        return timeUnit.convert(diffInMillies,TimeUnit.DAYS);
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
+    public void alert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
 
+        alert.showAndWait();
+    }
 
     public TableView getBookings_tableView() {
         return bookings_tableView;

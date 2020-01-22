@@ -55,20 +55,20 @@
                 <!-- Toggle Button -->
 
                 <TextField fx:id="guest_ID" visible="false" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
+                           GridPane.rowIndex="1" GridPane.halignment="RIGHT" editable="false"/>
                 <TextField fx:id="startDate" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                           GridPane.halignment="RIGHT"/>
+                           GridPane.halignment="RIGHT" editable="false"/>
                 <TextField fx:id="endDate" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                           GridPane.halignment="RIGHT"/>
+                           GridPane.halignment="RIGHT" editable="false"/>
                 <TextField fx:id="guestID" GridPane.columnIndex="1" GridPane.rowIndex="3"
-                           GridPane.halignment="RIGHT"/>
+                           GridPane.halignment="RIGHT" editable="false"/>
                 <TextField fx:id="roomCount" GridPane.columnIndex="1" GridPane.rowIndex="4"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="agentID" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="hotelID" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
+                           GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="agentID" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="hotelID" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT" editable="false"/>
 
-                <TextArea fx:id="priceDetails" wrapText="true" maxWidth="150" prefHeight="140" GridPane.columnIndex="1" GridPane.rowIndex="12" styleClass="priceDetails"/>
-                <TextField fx:id="fullPrice" GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.halignment="RIGHT"/>
+                <TextArea fx:id="priceDetails" wrapText="true" maxWidth="150" prefHeight="140" GridPane.columnIndex="1" GridPane.rowIndex="12" styleClass="priceDetails" editable="false"/>
+                <TextField fx:id="fullPrice" GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.halignment="RIGHT" editable="false"/>
 
                 <ComboBox fx:id="paymentComboBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
                     <items>
@@ -78,8 +78,8 @@
                 </ComboBox>
 
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="20" spacing="15" GridPane.halignment="CENTER">
-                    <Button fx:id="guest_saveBtn" text="Save"/>
-                    <Button fx:id="guest_clearBtn" text="Clear"/>
+                    <Button fx:id="booking_saveBtn" text="Save"/>
+                    <Button fx:id="booking_deleteBtn" text="Delete"/>
                 </HBox>
 
             </GridPane>
