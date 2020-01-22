@@ -91,8 +91,12 @@ public class Booking {
         this.agentID.set(agentID);
     }
 
-    public ObservableList<Room> getRoomCount() {
+    public ObservableList<Room> getRoomCountList() {
         return roomCount;
+    }
+
+    public int getRoomCount() {
+        return roomCount.size();
     }
 
     public void setRoomCount(ObservableList<Room> roomCount) {

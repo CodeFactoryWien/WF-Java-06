@@ -36,42 +36,27 @@
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="3"
                        GridPane.halignment="RIGHT" text="Guest ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="4"
-                       GridPane.halignment="RIGHT" text="Agent ID: "/>
+                       GridPane.halignment="RIGHT" text="Room Count: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="5"
-                       GridPane.halignment="RIGHT" text="Hotel ID: "/>
+                       GridPane.halignment="RIGHT" text="Agent ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
-                       GridPane.halignment="RIGHT" text="City: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="7"
-                       GridPane.halignment="RIGHT" text="Zip Code: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="8"
-                       GridPane.halignment="RIGHT" text="Country: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="9"
-                       GridPane.halignment="RIGHT" text="Phone number: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="10"
-                       GridPane.halignment="RIGHT" text="Email: "/>
+                       GridPane.halignment="RIGHT" text="Hotel ID: "/>
 
                 <!-- Toggle Button -->
 
                 <TextField fx:id="guest_ID" visible="false" GridPane.columnIndex="1"
                            GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_firstName" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                <TextField fx:id="startDate" GridPane.columnIndex="1" GridPane.rowIndex="1"
                            GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_lastName" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                <TextField fx:id="endDate" GridPane.columnIndex="1" GridPane.rowIndex="2"
                            GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_gender" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                <TextField fx:id="guestID" GridPane.columnIndex="1" GridPane.rowIndex="3"
                            GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_address" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                <TextField fx:id="roomCount" GridPane.columnIndex="1" GridPane.rowIndex="4"
                            GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="7"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="8"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="9"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_email" GridPane.columnIndex="1" GridPane.rowIndex="10"
-                           GridPane.halignment="RIGHT"/>
+                <TextField fx:id="agentID" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
+                <TextField fx:id="hotelID" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
+
 
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
                     <Button fx:id="guest_saveBtn" text="Save"/>

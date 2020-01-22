@@ -3,12 +3,14 @@ package com.teamname.hotelfx.controller;
 import com.teamname.hotelfx.Controller;
 import com.teamname.hotelfx.data.Booking;
 import com.teamname.hotelfx.data.BookingList;
+import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -16,6 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckInController {
+    @FXML
+    public TextField guest_ID;
+    @FXML
+    public TextField startDate;
+    @FXML
+    public TextField endDate;
+    @FXML
+    public TextField guestID;
+    @FXML
+    public TextField roomCount;
+    @FXML
+    public TextField agentID;
+    @FXML
+    public TextField hotelID;
     @FXML
     private TableView rooms_booking_tableView;
     @FXML
@@ -29,6 +45,7 @@ public class CheckInController {
         bookingTableColumnNames.add("startDate");
         bookingTableColumnNames.add("endDate");
         bookingTableColumnNames.add("guestID");
+        bookingTableColumnNames.add("roomCount");
         bookingTableColumnNames.add("agentID");
         bookingTableColumnNames.add("hotelID");
 
@@ -55,7 +72,14 @@ public class CheckInController {
 //                    }
 //                }
 
-                rooms_booking_tableView.setItems(newBooking.getRoomCount());
+                rooms_booking_tableView.setItems(newBooking.getRoomCountList());
+                Booking booking = BookingList.getInstance().getBookingList().get(bookings_tableView.getSelectionModel().getSelectedIndex());
+                startDate.setText(String.valueOf(booking.getStartDate()));
+                endDate.setText(String.valueOf(booking.getEndDate()));
+                guestID.setText(String.valueOf(booking.getGuestID()));
+                roomCount.setText(String.valueOf(booking.getRoomCount()));
+                agentID.setText(String.valueOf(booking.getAgentID()));
+                hotelID.setText(String.valueOf(booking.getHotelID()));
 
             }
         });

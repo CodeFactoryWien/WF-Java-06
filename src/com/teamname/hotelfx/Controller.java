@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -328,11 +329,13 @@ public class Controller {
                 Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
                         Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
 
-                booking.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
+                booking.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
                 BookingList.getInstance().getBookingList().add(booking);
+                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
             } else {
                 Booking b = loopBookings(guest_tableView.getSelectionModel().getSelectedItem().getGuestID());
-                b.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
+                b.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
+                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
             }
         }
     }
@@ -553,8 +556,8 @@ public class Controller {
         hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
             if (newHotel != null) {
                 try {
-                    room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms(newHotel));
-                    listRoom = HotelfxAccess.getInstance().getAllRooms(newHotel);
+                    room_tableView.getItems().setAll(HotelfxAccess.getAllRooms(newHotel));
+                    listRoom = HotelfxAccess.getAllRooms(newHotel);
                     room_tableView.getSelectionModel().selectFirst();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -598,10 +601,6 @@ public class Controller {
             /* add guests data to guest tableView*/
             guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());                                    //-------RECONNECT
 
-            /*connect in application booking list to check in booking tableView*/
-            checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
-
-
 
             /*add hotels form database to chotel omboBox*/
             hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
@@ -638,6 +637,8 @@ public class Controller {
                 }
             }
         });
+
+
     }
 
 
