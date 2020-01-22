@@ -164,13 +164,17 @@
         </TabPane>
     </center>
     <Pane>
-        <Label fx:id="labelConnect" layoutX="155.0" layoutY="0" prefHeight="25.0" prefWidth="3000.0"
-               styleClass="conLabel"/>
-        <ToggleButton fx:id="nightBtn" onAction="#nightMode" minWidth="115" mnemonicParsing="false" prefHeight="10.0"
+        <Label fx:id="labelConnect" layoutX="265.0" layoutY="3" prefHeight="5.0" prefWidth="630.0" opacity="1"
+               styleClass=""/>
+        <ToggleButton fx:id="nightBtn" onAction="#nightMode" layoutX="380" minWidth="115" mnemonicParsing="false"
+                      prefHeight="10.0"
                       style="-fx-font-size:10.5"
                       prefWidth="115" text="NIGHTMODE"/>
-        <ToggleButton fx:id="glassBtn" onAction="#glassMode" minWidth="115" mnemonicParsing="false" prefHeight="10.0"
+        <ToggleButton fx:id="glassBtn" onAction="#glassMode" layoutX="265" minWidth="115" mnemonicParsing="false"
+                      prefHeight="10.0"
                       style="-fx-font-size:10.5"
                       prefWidth="115" text="GLASSMODE"/>
+        <ToggleButton fx:id="connectBtn" onAction="#dbConnection" layoutX="150" minWidth="115" mnemonicParsing="false"
+                      prefHeight="10.0" text="CONNECT"/>
     </Pane>
 </BorderPane>

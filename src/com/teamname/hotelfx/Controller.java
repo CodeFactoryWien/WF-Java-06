@@ -135,10 +135,11 @@ public class Controller {
     double scrW = Screen.getPrimary().getVisualBounds().getWidth();
     double scrH = Screen.getPrimary().getVisualBounds().getHeight();
 
-    @FXML
-    public void chartTable() throws ParseException {
-
-    }
+    private String guestColumnsSQL = "SELECT * FROM guests";
+    private String roomsColumnsSQL = "SELECT rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
+            "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+            "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
+            "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
 
 
     @FXML
@@ -213,7 +214,15 @@ public class Controller {
             try {
                 HotelfxAccess.getDBConnection();
                 HotelfxAccess.getInstance().getAllGuests();
-                connectBtn.setText("CONN OFF");
+                HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
+                HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
+                guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
+                hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+                hotelComboBox.getSelectionModel().selectFirst();
+                guest_tableView.getSelectionModel().selectFirst();
+                listGuest = HotelfxAccess.getAllGuests();
+
+                connectBtn.setText("DISCONNECTED");
 
 
                 labelConnect.setStyle("-fx-background-color: red;");
@@ -226,7 +235,7 @@ public class Controller {
                     labelConnect.setStyle("-fx-background-color: green;");
                     labelConnect.setText("  Connection to Database established --");
                 }
-                connectBtn.setText("CONN ON");
+                connectBtn.setText("CONNECTED");
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -235,7 +244,7 @@ public class Controller {
             try {
                 HotelfxAccess.getDBConnection().close();
                 System.out.println("DB Conn closed");
-                connectBtn.setText("CONN OFF");
+                connectBtn.setText("DISCONNECTED");
 
                 labelConnect.setStyle("-fx-background-color: grey;");
                 labelConnect.setText("  Connection to Database closed --");
@@ -428,9 +437,9 @@ public class Controller {
         guest_zipCode.setEditable(true);
 
         room_gridPane.setOpacity(1);
-        room_number.setEditable(true);
-        room_floor.setEditable(true);
-        room_description.setEditable(true);
+        room_number.setEditable(false);
+        room_floor.setEditable(false);
+        room_description.setEditable(false);
         startDatePicker.setEditable(true);
         endDatePicker.setEditable(true);
         hotelComboBox.setEditable(true);
@@ -471,9 +480,6 @@ public class Controller {
                 guest_zipCode.setEditable(true);
 
                 room_gridPane.setOpacity(1);
-                room_number.setEditable(true);
-                room_floor.setEditable(true);
-                room_description.setEditable(true);
                 startDatePicker.setEditable(true);
                 endDatePicker.setEditable(true);
                 hotelComboBox.setEditable(true);
@@ -534,18 +540,42 @@ public class Controller {
 
 
     public void initialize() throws SQLException, ParseException {
+
+        /*add change listeners to tableViews*/
+        guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                new ListSelectChangeListener(guest_tableView)
+        );
+        room_tableView.getSelectionModel().selectedIndexProperty().addListener(
+                new ListSelectChangeListener(room_tableView)
+        );
+
+        /*add eventlistener to hotel Combobox to change shown rooms in tableView based on selected hotel*/
+        hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
+            if (newHotel != null) {
+                try {
+                    room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms(newHotel));
+                    listRoom = HotelfxAccess.getInstance().getAllRooms(newHotel);
+                    room_tableView.getSelectionModel().selectFirst();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         HotelfxAccess.getDBConnection();
         BackupScheduler.backupScheduler();
-        ChangeListener<String> textFieldListener = (observable, oldValue, newValue) -> {
+
             nightBtn.setLayoutX(scrW - 115);
             glassBtn.setLayoutX(scrW - 232);
-        };
+        room_floor.setEditable(false);
+        room_number.setEditable(false);
+        room_description.setEditable(false);
+
 //        GanttChartSample gc = new GanttChartSample();
 //        gc.calcChart();
 
-        guest_country.textProperty().addListener(textFieldListener);
         //textFieldListener.changed(null, null, guest_country.getText());
-
+        try {
         guest_gridPane.setOpacity(0.5);
         guest_firstName.setEditable(false);
         guest_lastName.setEditable(false);
@@ -560,31 +590,18 @@ public class Controller {
 
         listGuest = HotelfxAccess.getAllGuests();
 
-        /* sql queries for columns headers*/
-        String guestColumnsSQL = "SELECT * FROM guests";
-        String roomsColumnsSQL = "SELECT rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
-                "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
-                "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
-                "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
 
-        try {
             /* add column headers to tableViews*/
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
             /* add guests data to guest tableView*/
-            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
+            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());                                    //-------RECONNECT
 
             /*connect in application booking list to check in booking tableView*/
             checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
 
-            /*add change listeners to tableViews*/
-            guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
-                    new ListSelectChangeListener(guest_tableView)
-            );
-            room_tableView.getSelectionModel().selectedIndexProperty().addListener(
-                    new ListSelectChangeListener(room_tableView)
-            );
+
 
             /*add hotels form database to chotel omboBox*/
             hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
@@ -595,22 +612,6 @@ public class Controller {
         }
 
 
-
-
-
-
-        /*add eventlistener to hotel Combobox to change shown rooms in tableView based on selected hotel*/
-        hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
-            if (newHotel != null) {
-                try {
-                    room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms(newHotel));
-                    listRoom = HotelfxAccess.getInstance().getAllRooms(newHotel);
-                    room_tableView.getSelectionModel().selectFirst();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         hotelComboBox.getSelectionModel().selectFirst();
         guest_tableView.getSelectionModel().selectFirst();
 
