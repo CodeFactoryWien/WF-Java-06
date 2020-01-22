@@ -17,7 +17,7 @@ public class Main extends Application {
         System.setProperty("prism.lcdtext", "false");
         System.setProperty("prism.text", "t2k");
 
-        Parent root = FXMLLoader.load(getClass().getResource("bookingWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ressources/icon.png")));
         primaryStage.setTitle("Hotel FX");
