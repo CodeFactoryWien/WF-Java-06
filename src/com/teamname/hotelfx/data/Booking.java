@@ -4,6 +4,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class Booking {
     public IntegerProperty hotelIDProperty(){
         return hotelID;
     }
-    private List<Integer> roomCount = new ArrayList<>();
+    private ObservableList<Room> roomCount = FXCollections.observableArrayList();
     public int roomProperty(){
         return  roomCount.size();
     }
@@ -89,11 +91,11 @@ public class Booking {
         this.agentID.set(agentID);
     }
 
-    public List<Integer> getRoomCount() {
+    public ObservableList<Room> getRoomCount() {
         return roomCount;
     }
 
-    public void setRoomCount(List<Integer> roomCount) {
+    public void setRoomCount(ObservableList<Room> roomCount) {
         this.roomCount = roomCount;
     }
 

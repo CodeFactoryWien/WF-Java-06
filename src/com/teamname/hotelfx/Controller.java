@@ -86,7 +86,13 @@ public class Controller {
     @FXML
     public Button room_clearBtn;
     @FXML
+    public TabPane tabPane;
+    @FXML
+    public Tab bookingWindowTab;
+    @FXML
     public Tab checkInTab;
+    @FXML
+    public Tab chartTableTab;
     @FXML
     public Pane chartTable;
     @FXML
@@ -308,33 +314,18 @@ public class Controller {
                 break;
             }
         }
-
         if (filledOut) {
-            if (checkIfBookingExists(room_tableView.getSelectionModel().getSelectedItem().getRoomID())) {
-
-                String hotelName = textFieldData.get("hotelid");
+            if (checkIfBookingExists(Integer.parseInt(guest_ID.getText()))) {
                 Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
                         Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
 
-
-//            listBooking.add(booking);
-
-                List<Integer> list = booking.getRoomCount();
-                list.add(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
-                booking.setRoomCount(list);
-
-
+                booking.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
                 BookingList.getInstance().getBookingList().add(booking);
-                CheckInController cc = new CheckInController();
-                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+            } else {
+                Booking b = loopBookings(guest_tableView.getSelectionModel().getSelectedItem().getGuestID());
+                b.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
             }
-        }else{
-            Booking b = loopBookings(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
-            List<Integer> list = b.getRoomCount();
-            list.add(room_tableView.getSelectionModel().getSelectedItem().getRoomID());
-            b.setRoomCount(list);
         }
-
     }
 
     public void alert(String title, String message, Alert.AlertType alertType) {
@@ -378,24 +369,23 @@ public class Controller {
 
     public boolean checkIfBookingExists(int guestID){
         boolean bExists = true;
-        for(Booking booking: BookingList.getInstance().getBookingList()){
-            if(booking.getGuestID() == guestID){}
-            else{
-                bExists = false;
+        if(!BookingList.getInstance().getBookingList().isEmpty()){
+            for(Booking booking: BookingList.getInstance().getBookingList()){
+                if(booking.getGuestID() == guestID){
+                    bExists = false;
+                    break;
+                }
             }
         }
         return bExists;
     }
 
     public Booking loopBookings (int guestID){
-        System.out.println("loopBookings");
-        System.out.println(guestID);
         Booking b = null;
         for(Booking booking: BookingList.getInstance().getBookingList()){
             if(booking.getGuestID() == guestID){
                 b = booking;
-                System.out.println(b);
-                System.out.println(booking);
+                break;
             }
         }
         return b;
@@ -584,6 +574,9 @@ public class Controller {
         /* add guests data to guest tableView*/
         guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
 
+        /*connect in application booking list to check in booking tableView*/
+        checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
+
         /*add change listeners to tableViews*/
         guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
                 new ListSelectChangeListener(guest_tableView)
@@ -594,6 +587,7 @@ public class Controller {
 
         /*add hotels form database to chotel omboBox*/
         hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+
 
         /*add eventlistener to hotel Combobox to change shown rooms in tableView based on selected hotel*/
         hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
@@ -626,6 +620,13 @@ public class Controller {
             saveTextFieldsRooms();
         });
 
+        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+            if (newTab != null) {
+                if (newTab.getId().equals("checkInTab")) {
+                        checkInController.getBookings_tableView().getSelectionModel().selectLast();
+                }
+            }
+        });
     }
 
 

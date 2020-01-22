@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CheckInController {
     @FXML
-    public TableView rooms_booking_tableView;
+    private TableView rooms_booking_tableView;
     @FXML
     private TableView bookings_tableView;
 
@@ -44,18 +44,18 @@ public class CheckInController {
 
         bookings_tableView.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Booking>) (selected, oldBooking, newBooking) -> {
             if (newBooking != null) {
-                System.out.println(bookings_tableView.getSelectionModel().getSelectedIndex());
-                List<Integer> rooms = newBooking.getRoomCount();
-                List<Room> roomList = FXCollections.observableArrayList();
-                for (Integer room : rooms) {
-                    try {
-                        roomList.add(HotelfxAccess.getRoomsByID(room));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                List<Room> rooms = newBooking.getRoomCount();
+//                System.out.println("newbooking room count:  "+newBooking.getRoomCount());
+//                List<Room> roomList = FXCollections.observableArrayList();
+//                for (Room room : rooms) {
+//                    try {
+//                        roomList.add(HotelfxAccess.getRoomsByID(room.getRoomID()));
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
-                rooms_booking_tableView.getItems().setAll(roomList);
+                rooms_booking_tableView.setItems(newBooking.getRoomCount());
 
             }
         });
@@ -65,7 +65,5 @@ public class CheckInController {
         return bookings_tableView;
     }
 
-    public void setBookings_tableView(TableView bookings_tableView) {
-        this.bookings_tableView = bookings_tableView;
-    }
+
 }
