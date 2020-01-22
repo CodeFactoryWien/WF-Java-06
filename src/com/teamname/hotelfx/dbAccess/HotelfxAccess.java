@@ -196,6 +196,20 @@ public class HotelfxAccess {
         return list;
     }
 
+    public static int getPriceByRoomType(String roomType) throws SQLException {
+        String sql = "SELECT roomType.roomTypeDescription FROM roomtype WHERE roomtype.roomType = '" + roomType +"'";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+
+        int roomTypePrice = 999;
+        while (rs.next()) {
+            roomTypePrice = rs.getInt("roomType.roomTypeDescription");
+        }
+
+        pstmnt.close();
+        return roomTypePrice;
+    }
+
 
     public static void addColumnsToTable(List<String> columnNames, TableView tableView) {
         for (String columnName : columnNames) {

@@ -332,11 +332,22 @@ public class Controller {
                 booking.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
                 BookingList.getInstance().getBookingList().add(booking);
                 checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+                try {
+                    checkInController.calculatePrice(booking);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Booking b = loopBookings(guest_tableView.getSelectionModel().getSelectedItem().getGuestID());
                 b.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
                 checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+                try {
+                    checkInController.calculatePrice(b);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+
         }
     }
 
