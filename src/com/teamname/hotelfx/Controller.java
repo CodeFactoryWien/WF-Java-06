@@ -544,6 +544,8 @@ public class Controller {
 
     public void initialize() throws SQLException, ParseException {
 
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
         /*add change listeners to tableViews*/
         guest_tableView.getSelectionModel().selectedIndexProperty().addListener(
                 new ListSelectChangeListener(guest_tableView)

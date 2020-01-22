@@ -30,7 +30,7 @@
     </top>
     <center>
         <TabPane fx:id="tabPane">
-            <Tab text="Tab 1" fx:id="bookingWindowTab">
+            <Tab text="ROOMS &amp; GUESTS" fx:id="bookingWindowTab">
                 <BorderPane fx:id="borderPane">
                     <left>
                         <VBox spacing="0">
@@ -150,11 +150,11 @@
                 </BorderPane>
             </Tab>
 
-            <Tab text="Tab 2" fx:id="checkInTab">
+            <Tab text="CHECK IN" fx:id="checkInTab">
                 <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
             </Tab>
 
-            <Tab text="Tab 3" fx:id="chartTableTab">
+            <Tab text="OVERVIEW" fx:id="chartTableTab">
                 <fx:include source="fxml/chartTable.fxml" fx:id="chartTable"/>
                 <!--                <AnchorPane fx:id="chartTableAnchor">-->
 
