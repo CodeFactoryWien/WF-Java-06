@@ -9,6 +9,7 @@ import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
@@ -32,6 +33,8 @@ public class CheckInController {
     public TextField agentID;
     @FXML
     public TextField hotelID;
+    @FXML
+    public ComboBox paymentComboBox;
     @FXML
     private TableView rooms_booking_tableView;
     @FXML

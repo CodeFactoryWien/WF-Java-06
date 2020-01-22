@@ -14,18 +14,22 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.TextArea?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teamname.hotelfx.controller.CheckInController"
-            prefHeight="400.0" prefWidth="600.0">
+            >
 
 
     <left>
-        <VBox spacing="0">
+        <VBox spacing="40">
+            <padding>
+                <Insets left="30" top="30" bottom="30" right="30"/>
+            </padding>
             <GridPane fx:id="booking_gridPane" hgap="7" vgap="4">
-                <padding>
-                    <Insets left="30" top="30" right="30" bottom="30"/>
-                </padding>
+<!--                <padding>-->
+<!--                    <Insets left="30" top="30" right="30" bottom="30"/>-->
+<!--                </padding>-->
 
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="0"
                        GridPane.columnSpan="2" text="Booking Details" GridPane.halignment="CENTER"/>
@@ -41,6 +45,8 @@
                        GridPane.halignment="RIGHT" text="Agent ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
                        GridPane.halignment="RIGHT" text="Hotel ID: "/>
+                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="12"
+                       GridPane.halignment="RIGHT" text="Price details: "/>
 
                 <!-- Toggle Button -->
 
@@ -57,12 +63,22 @@
                 <TextField fx:id="agentID" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
                 <TextField fx:id="hotelID" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
 
+                <TextArea wrapText="true" maxWidth="150" prefHeight="115" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+                <ComboBox fx:id="paymentComboBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                    </items>
+                </ComboBox>
 
-                <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="15" spacing="15" GridPane.halignment="CENTER">
                     <Button fx:id="guest_saveBtn" text="Save"/>
                     <Button fx:id="guest_clearBtn" text="Clear"/>
                 </HBox>
+
             </GridPane>
+
+
         </VBox>
     </left>
 

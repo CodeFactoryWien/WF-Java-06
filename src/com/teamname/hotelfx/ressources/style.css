@@ -41,9 +41,9 @@
 }
 
 
-.xxx {
+.root {
     //css instructions here
-    -fx-background-color: #000000;
+    -fx-background-color: #ffffff;
     -fx-blend-mode:difference;
     -fx-opacity:0.9;
 }

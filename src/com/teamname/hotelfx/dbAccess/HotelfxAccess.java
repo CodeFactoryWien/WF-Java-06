@@ -142,6 +142,21 @@ public class HotelfxAccess {
         return list;
     }
 
+    public static List<String> getAllPaymentTypes() throws SQLException {
+        String sql = "SELECT paymenttype FROM paymenttype ORDER BY paymentTypeID";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<String> list = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            String paymenttype = rs.getString("paymenttype");
+            list.add(paymenttype);
+        }
+
+        pstmnt.close();
+        return list;
+    }
+
     public static Room getRoomsByID(int roomID) throws SQLException {
         String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
                 "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +

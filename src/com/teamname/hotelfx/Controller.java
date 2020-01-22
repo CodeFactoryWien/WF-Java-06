@@ -601,11 +601,16 @@ public class Controller {
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
             /* add guests data to guest tableView*/
-            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());                                    //-------RECONNECT
+            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());//-------RECONNECT
 
 
             /*add hotels form database to chotel omboBox*/
             hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+
+            /* adds payment types to payment type combo box in check in tab */
+            checkInController.paymentComboBox.getItems().setAll(HotelfxAccess.getAllPaymentTypes());
+            checkInController.paymentComboBox.getSelectionModel().selectFirst();
+
 
 
         } catch (Exception ignore) {
@@ -636,6 +641,7 @@ public class Controller {
             if (newTab != null) {
                 if (newTab.getId().equals("checkInTab")) {
                         checkInController.getBookings_tableView().getSelectionModel().selectLast();
+
                 }
             }
         });
