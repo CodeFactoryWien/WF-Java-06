@@ -106,8 +106,6 @@ public class Controller {
     @FXML
     private TableView<Guest> guest_tableView;
     @FXML
-    private TableView<Guest> chartTableView;
-    @FXML
     private TableView<Room> room_tableView;
     @FXML
     private BorderPane borderPane;

@@ -1,9 +1,16 @@
 package com.teamname.hotelfx.controller;
 
 import com.teamname.hotelfx.data.Booking;
+import com.teamname.hotelfx.dbAccess.HotelfxAccess;
+import com.teamname.hotelfx.diagramm.Overview;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.List;
 
 public class ChartTableController {
     @FXML
@@ -18,8 +25,35 @@ public class ChartTableController {
     private TableColumn guest_firstName = new TableColumn();
     @FXML
     private TableColumn guest_lastName = new TableColumn();
+    @FXML
+    private TableView<Overview> chart_tableView;
+    @FXML
+    private List<String> listOverview = FXCollections.observableArrayList();
 
+//    private String overviewColumnsSQL = "SELECT * FROM bookings";
+//    private String overviewColumnsSQL = "SELECT rooms.roomNumber, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName FROM rooms " +
+//            "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+//            "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
+//            "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
+
+    private String overviewColumnsSQL = "SELECT rooms.roomNumber FROM rooms" +
+            "SELECT bookings.dateFrom, bookings.dateTo FROM bookings" +
+            "SELECT guests.firstName, guests.lastName";
+
+    public void initialize() throws SQLException, ParseException {
+        HotelfxAccess.getDBConnection();
+        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(overviewColumnsSQL), chart_tableView);
+
+
+
+        /*connect in application booking list to check in booking tableView*/
+//    chart_tableView.setItems(listOverview.getInstance().getOverviewList());
+
+//    Controller ctrl = new Controller;
+        chart_tableView.getSelectionModel().selectFirst();
+    }
 };
+
 
 
 
