@@ -1,6 +1,7 @@
 
 package com.teamname.hotelfx.dbAccess;
 
+import com.teamname.hotelfx.data.Booking;
 import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.Room;
 import javafx.collections.FXCollections;
@@ -222,6 +223,56 @@ public class HotelfxAccess {
             }
             tableView.getColumns().add(column);
         }
+    }
+
+    public static List<Booking> getAllBookings () throws SQLException {
+        // String sql = "SELECT * from bookings";
+        String sql = "SELECT * from bookings WHERE fk_bookingStatusID = 1";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<Booking> bookingList = FXCollections.observableArrayList();
+        while (rs.next()) {
+            int bookingID = rs.getInt("bookingID");
+            String startDate = rs.getString("dateFrom");
+            String endDate = rs.getString("dateTo");
+            int guestID = rs.getInt("fk_guestID");
+            String number = rs.getString("roomCount");
+            int agentID = rs.getInt("fk_reservationAgentID");
+            int hotelID = rs.getInt("fk_hotelID");
+
+            Booking b = new Booking(startDate, endDate, guestID, agentID, hotelID);
+            b.setBookingID(bookingID);
+            bookingList.add(b);
+
+        }
+        pstmnt.close();
+        return bookingList;
+    }
+
+    public static List<String> getAllRoomsByBookingID (int bookingID) throws SQLException {
+        // String sql = "Select roomID from roomsbooked where fk_bookingID = 1";
+        String sql = "Select roomID from roomsbooked where fk_bookingID = " + bookingID;
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List<String> roomList = FXCollections.observableArrayList();
+        while (rs.next()) {
+            int roomID = rs.getInt("roomID");
+
+            roomList.add("RoomID: " + roomID);
+        }
+        pstmnt.close();
+        return roomList;
+    }
+
+    private static final String bookings = "bookings";
+
+    public static void updateBooking(int bookingID) throws SQLException {
+        String sql = "UPDATE "+  bookings + " SET fk_bookingStatusID = ? where bookings.bookingID = ?";
+        pstmnt = conn.prepareStatement(sql);
+        pstmnt.setInt(2, bookingID);
+        pstmnt.setInt(1, 2);
+        pstmnt.executeUpdate();
+        pstmnt.close();
     }
 
     public static HotelfxAccess getInstance() {

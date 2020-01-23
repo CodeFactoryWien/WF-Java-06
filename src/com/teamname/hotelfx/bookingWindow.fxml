@@ -154,6 +154,10 @@
                 <fx:include source="fxml/checkIn.fxml" fx:id="checkIn"/>
             </Tab>
 
+            <Tab text="CHECK OUT" fx:id="checkOutTab">
+                <fx:include source="fxml/checkOut.fxml" fx:id="checkOut"/>
+            </Tab>
+
             <Tab text="OVERVIEW" fx:id="chartTableTab">
                 <fx:include source="fxml/chartTable.fxml" fx:id="chartTable"/>
                 <!--                <AnchorPane fx:id="chartTableAnchor">-->

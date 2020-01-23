@@ -1,6 +1,7 @@
 package com.teamname.hotelfx;
 
 import com.teamname.hotelfx.controller.CheckInController;
+import com.teamname.hotelfx.controller.CheckOutController;
 import com.teamname.hotelfx.data.*;
 import com.teamname.hotelfx.dbAccess.BackupScheduler;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
@@ -15,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -100,10 +100,12 @@ public class Controller {
     public AnchorPane chartTableAnchor;
     @FXML
     private CheckInController checkInController;
+    @FXML
+    private CheckOutController checkOutController;
     //    @FXML
 //    private ChartTableController chartTableController;
     @FXML
-    private ComboBox hotelComboBox;
+    private ComboBox<String> hotelComboBox;
     @FXML
     private TableView<Guest> guest_tableView;
     @FXML
@@ -128,6 +130,8 @@ public class Controller {
     private ToggleButton connectBtn;
     @FXML
     private Label labelConnect;
+    @FXML
+    public Tab checkOutTab;
 
 
     private List<Guest> listGuest = FXCollections.observableArrayList();
@@ -625,6 +629,8 @@ public class Controller {
             clearTextFields(guest_gridPane);
         });
 
+
+
         room_clearBtn.setOnAction(event -> {
             clearTextFields(room_gridPane);
         });
@@ -637,14 +643,23 @@ public class Controller {
             saveTextFieldsRooms();
         });
 
+
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab != null) {
                 if (newTab.getId().equals("checkInTab")) {
                         checkInController.getBookings_tableView().getSelectionModel().selectLast();
 
+                }else if(newTab.equals(checkOutTab)) {
+                    try {
+                        checkOutController.getBookings_tableView().getItems().setAll(HotelfxAccess.getAllBookings());
+                        checkOutController.getBookings_tableView().getSelectionModel().selectLast();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
+
 
 
     }

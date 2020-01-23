@@ -12,10 +12,11 @@ import java.util.List;
 
 public class Booking {
 
-//    private final IntegerProperty bookingID = new SimpleIntegerProperty(this, "bookingID");
-//    public IntegerProperty bookingIDProperty(){
-//        return bookingID;
-//    }
+    private final IntegerProperty bookingID = new SimpleIntegerProperty(this, "bookingID");
+    public IntegerProperty bookingIDProperty(){
+        return bookingID;
+    }
+
     private final StringProperty startDate = new SimpleStringProperty(this, "startDate");
     public StringProperty startDateProperty(){
         return startDate;
@@ -57,6 +58,14 @@ public class Booking {
         setAgentID(agentID);
 //        setstatusID(statusID);
         setHotelID(hotelID);
+    }
+
+    public int getBookingID() {
+        return bookingID.get();
+    }
+
+    public void setBookingID(int bookingID) {
+        this.bookingID.set(bookingID);
     }
 
     public String getStartDate() {
