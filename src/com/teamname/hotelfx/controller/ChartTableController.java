@@ -16,6 +16,7 @@ import javafx.util.Callback;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -51,8 +52,12 @@ public class ChartTableController implements Initializable {
 //                      "LEFT JOIN bookings    B ON RB.fk_bookingID = B.bookingID IS NOT null\n" +
 //                      "LEFT JOIN guests      G ON G.guestID       = B.fk_guestID IS NOT null\n" +
 //                      "ORDER BY R.roomID";
-//String SQLQ = "SELECT rooms.roomID, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName FROM rooms LEFT JOIN roomsbooked ON rooms.roomID = roomsbooked.roomID LEFT JOIN bookings ON roomsbooked.fk_bookingID = bookings.bookingID LEFT JOIN guests ON guests.guestID       = bookings.fk_guestID";
-            String SQLQ = "SELECT * from bookings";
+            String SQLQ = "SELECT rooms.roomNumber, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName " +
+                    "FROM rooms " +
+                    "LEFT JOIN roomsbooked ON rooms.roomID = roomsbooked.roomID " +
+                    "LEFT JOIN bookings ON roomsbooked.fk_bookingID = bookings.bookingID " +
+                    "LEFT JOIN guests ON guests.guestID       = bookings.fk_guestID";
+
             //st.executeUpdate(SQLC);
 
 
@@ -71,23 +76,27 @@ public class ChartTableController implements Initializable {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
                     }
                 });
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 
+                    @Override
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(Objects.toString(param.getValue().get(j), "----"));
+                    }
+                });
                 chart_tableView.getColumns().addAll(col);
             }
 
             //ObservableList
             while (rs.next()) {
-                System.out.println("Hwllo2");
+//                ResultSet columns = c.getMetaData().getColumns(null, null, null, null);
+                System.out.println(">>>>>>> >");
                 ObservableList<String> row = FXCollections.observableArrayList();
 
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    if (rs.getString(i) == null) {
-                        rs.getString(i).isBlank();
-                    }
-                    ;
                     row.add(rs.getString(i));
                 }
                 data.add(row);
+
             }
 
             chart_tableView.setItems(data);
