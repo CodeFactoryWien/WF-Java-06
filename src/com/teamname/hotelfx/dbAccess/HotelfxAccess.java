@@ -402,6 +402,20 @@ public class HotelfxAccess {
         return roomList;
     }
 
+    public static String getAllRoomsByBookingIDINT (int bookingID) throws SQLException {
+        // String sql = "Select roomID from roomsbooked where fk_bookingID = 1";
+        String sql = "Select roomID from roomsbooked where fk_bookingID = " + bookingID;
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        String roomID = "";
+        while (rs.next()) {
+            roomID = String.valueOf(rs.getInt("roomID"));
+
+        }
+        pstmnt.close();
+        return roomID;
+    }
+
     private static final String bookings = "bookings";
 
     public static void updateBooking(int bookingID) throws SQLException {
@@ -412,6 +426,8 @@ public class HotelfxAccess {
         pstmnt.executeUpdate();
         pstmnt.close();
     }
+
+
 
     public static HotelfxAccess getInstance() {
         return instance;
