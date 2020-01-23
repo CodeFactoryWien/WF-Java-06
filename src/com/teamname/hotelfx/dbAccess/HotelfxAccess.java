@@ -268,6 +268,35 @@ public class HotelfxAccess {
         return 0;
     }
 
+    public static int savePayment(int roomID, int price, int paymentTypeId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = HotelfxAccess.getInstance().getConn();
+            connection.setAutoCommit(false);
+            String query = "INSERT INTO payments(paymentID, date, payment, fk_roomID, fk_paymentTypeID, fk_paymentStatusID) VALUES(DEFAULT, ?, ?, ?, ?, ?)";
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            int counter = 1;
+            statement.setTimestamp(counter++, new Timestamp(System.currentTimeMillis()));
+            statement.setInt(counter++, price);
+            statement.setInt(counter++, roomID);
+            statement.setInt(counter++, paymentTypeId);
+            statement.setInt(counter++, 1);
+
+            statement.executeUpdate();
+            connection.commit();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, exception.getMessage());
+        }
+        return 0;
+    }
+
     public static List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
 //        String sql = "SELECT * FROM " + tableName;
@@ -294,6 +323,16 @@ public class HotelfxAccess {
 
         pstmnt.close();
         return roomTypePrice;
+    }
+
+    public static void updateRoomStatus(int roomID, int newRoomStatus) throws SQLException {
+        String sql = "UPDATE rooms SET rooms.fk_roomStatusID = ? WHERE rooms.roomID = ?";
+        pstmnt = conn.prepareStatement(sql);
+        pstmnt.setInt(1, newRoomStatus);
+        pstmnt.setInt(2, roomID);
+        pstmnt.executeUpdate();
+
+        pstmnt.close();
     }
 
 

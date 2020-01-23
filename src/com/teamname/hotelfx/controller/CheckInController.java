@@ -126,7 +126,11 @@ public class CheckInController {
                         Booking booking = (Booking) bookings_tableView.getSelectionModel().getSelectedItem();
                         for(Room room :  booking.getRoomCountList()){
                             int roomid = HotelfxAccess.saveRoom(room.getRoomID(), bookingID);
-                            if(roomid < 1){
+                            int price = Integer.parseInt(fullPrice.getText().substring(0, fullPrice.getText().length() - 1));
+                            int paymentID = HotelfxAccess.savePayment(room.getRoomID(), price,
+                                            paymentComboBox.getSelectionModel().getSelectedIndex() + 1);
+                            HotelfxAccess.updateRoomStatus(room.getRoomID(), 2);
+                            if(roomid < 1 || paymentID < 1){
                                 this.alert("Error", "Failed!", Alert.AlertType.ERROR);
                                 break;
                             }
@@ -182,7 +186,7 @@ public class CheckInController {
 
         long dateDiff = getDateDifference(startDATE, endDATE, TimeUnit.DAYS);
         String night_nights = (dateDiff > 1)? " nights" : " night";
-        priceDetails.appendText("\n for " + dateDiff + night_nights );
+        priceDetails.appendText("\n\t\t for " + dateDiff + night_nights );
         finalPrice *= dateDiff;
 
         fullPrice.setText(finalPrice + "€");

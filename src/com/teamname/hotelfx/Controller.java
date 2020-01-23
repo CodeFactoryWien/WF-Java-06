@@ -160,7 +160,7 @@ public class Controller {
         if (nightBtn.isSelected()) {
             night = " NIGHT ";
             blend.setTopInput(topInput);
-            stage.setAlwaysOnTop(true);
+//            stage.setAlwaysOnTop(true);
             nightBtn.setText("NIGHTMODE ON");
             stage.setTitle(stage.getTitle() + glass + night);
             blend.setMode(BlendMode.DIFFERENCE);
@@ -326,6 +326,7 @@ public class Controller {
                 this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
                 break;
             }else if(!(checkInController.getDateDifference(startDATE, endDATE, TimeUnit.DAYS) > 0)){
+                endDatePicker.setValue(null);
                 this.alert("Error", "Please enter a valid date!", Alert.AlertType.ERROR);
                 break;
             }else if (!StringPool.BLANK.equals(i)) {
@@ -469,6 +470,7 @@ public class Controller {
     }
 
     /*********************************** TOGGLE BUTTON *******************************************
+     *
      *
      * @param
      */
@@ -691,7 +693,18 @@ public class Controller {
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab != null) {
-                if (newTab.getId().equals("checkInTab")) {
+                if (newTab.equals(bookingWindowTab)) {
+                    try {
+                        guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
+                        hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+                        guest_tableView.getSelectionModel().selectLast();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                if (newTab.equals(checkInTab)) {
                         checkInController.getBookings_tableView().getSelectionModel().selectLast();
 
                 }
