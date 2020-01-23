@@ -1,59 +1,97 @@
 package com.teamname.hotelfx.controller;
 
-import com.teamname.hotelfx.data.Booking;
+
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
-import com.teamname.hotelfx.diagramm.Overview;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.List;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ResourceBundle;
 
-public class ChartTableController {
+
+public class ChartTableController implements Initializable {
+    public TableColumn Room_number;
     @FXML
-    private TableView<Booking> tableView = new TableView();
+    public TableColumn startDate;
     @FXML
-    private TableColumn Room_number = new TableColumn();
+    public TableColumn endDate;
     @FXML
-    private TableColumn startDate = new TableColumn();
+    public TableColumn guest_firstName;
     @FXML
-    private TableColumn endDate = new TableColumn();
+    public TableColumn guest_lastName;
     @FXML
-    private TableColumn guest_firstName = new TableColumn();
-    @FXML
-    private TableColumn guest_lastName = new TableColumn();
-    @FXML
-    private TableView<Overview> chart_tableView;
-    @FXML
-    private List<String> listOverview = FXCollections.observableArrayList();
+    private ObservableList<ObservableList> data;
 
-//    private String overviewColumnsSQL = "SELECT * FROM bookings";
-//    private String overviewColumnsSQL = "SELECT rooms.roomNumber, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName FROM rooms " +
-//            "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
-//            "LEFT JOIN roomtype ON roomtype.roomtypeID = rooms.fk_roomTypeID " +
-//            "LEFT JOIN hotels ON hotels.hotelID = rooms.fk_hotelID";
-
-    private String overviewColumnsSQL = "SELECT rooms.roomNumber FROM rooms" +
-            "SELECT bookings.dateFrom, bookings.dateTo FROM bookings" +
-            "SELECT guests.firstName, guests.lastName";
-
-    public void initialize() throws SQLException, ParseException {
-        HotelfxAccess.getDBConnection();
-        HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(overviewColumnsSQL), chart_tableView);
+    @FXML
+    private TableView chart_tableView;
 
 
+    private void overviewTable() {
+        chart_tableView.getColumns().clear();
+        Connection c;
+        data = FXCollections.observableArrayList();
+        try {
+            c = HotelfxAccess.getDBConnection();
 
-        /*connect in application booking list to check in booking tableView*/
-//    chart_tableView.setItems(listOverview.getInstance().getOverviewList());
+//            String SQLC = "create table update";
+//              String SQLQ = "SELECT bookings.dateFrom, bookings.dateTo FROM bookings";
+            String SQLQ = "SELECT R.roomNumber, " +
+                    "B.dateFrom, B.dateTo, G.firstName, G.lastName" +
+                    "  FROM rooms    R" +
+                    "  JOIN bookings B ON R.roomID = B.fk_guestID " +
+                    "  JOIN guests   G ON G.guestID = B.fk_guestID";
 
-//    Controller ctrl = new Controller;
-        chart_tableView.getSelectionModel().selectFirst();
+
+//            st.executeUpdate(SQLC);
+
+
+            ResultSet rs = c.createStatement().executeQuery(SQLQ);
+            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                int j = i;
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(param.getValue().get(j).toString());
+                    }
+                });
+                chart_tableView.getColumns().addAll(col);
+            }
+
+            //ObservableList
+            while (rs.next()) {
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
+
+            chart_tableView.setItems(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-};
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        chart_tableView.getColumns().clear();
+        overviewTable();
+
+
+    }
+
+}
 
 
 
