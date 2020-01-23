@@ -51,8 +51,8 @@ public class ChartTableController implements Initializable {
 //                      "LEFT JOIN bookings    B ON RB.fk_bookingID = B.bookingID IS NOT null\n" +
 //                      "LEFT JOIN guests      G ON G.guestID       = B.fk_guestID IS NOT null\n" +
 //                      "ORDER BY R.roomID";
-            String SQLQ = "SELECT rooms.roomID, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName FROM rooms LEFT JOIN roomsbooked ON rooms.roomID = roomsbooked.roomID LEFT JOIN bookings ON roomsbooked.fk_bookingID = bookings.bookingID LEFT JOIN guests ON guests.guestID       = bookings.fk_guestID";
-
+//String SQLQ = "SELECT rooms.roomID, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName FROM rooms LEFT JOIN roomsbooked ON rooms.roomID = roomsbooked.roomID LEFT JOIN bookings ON roomsbooked.fk_bookingID = bookings.bookingID LEFT JOIN guests ON guests.guestID       = bookings.fk_guestID";
+            String SQLQ = "SELECT * from bookings";
             //st.executeUpdate(SQLC);
 
 
