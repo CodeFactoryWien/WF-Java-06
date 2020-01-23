@@ -1,25 +1,97 @@
 package com.teamname.hotelfx.controller;
 
-import com.teamname.hotelfx.data.Booking;
+
+import com.teamname.hotelfx.dbAccess.HotelfxAccess;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
-public class ChartTableController {
-    @FXML
-    private TableView<Booking> tableView = new TableView();
-    @FXML
-    private TableColumn Room_number = new TableColumn();
-    @FXML
-    private TableColumn startDate = new TableColumn();
-    @FXML
-    private TableColumn endDate = new TableColumn();
-    @FXML
-    private TableColumn guest_firstName = new TableColumn();
-    @FXML
-    private TableColumn guest_lastName = new TableColumn();
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ResourceBundle;
 
-};
+
+public class ChartTableController implements Initializable {
+    public TableColumn Room_number;
+    @FXML
+    public TableColumn startDate;
+    @FXML
+    public TableColumn endDate;
+    @FXML
+    public TableColumn guest_firstName;
+    @FXML
+    public TableColumn guest_lastName;
+    @FXML
+    private ObservableList<ObservableList> data;
+
+    @FXML
+    private TableView chart_tableView;
+
+
+    private void overviewTable() {
+        chart_tableView.getColumns().clear();
+        Connection c;
+        data = FXCollections.observableArrayList();
+        try {
+            c = HotelfxAccess.getDBConnection();
+
+//            String SQLC = "create table update";
+//              String SQLQ = "SELECT bookings.dateFrom, bookings.dateTo FROM bookings";
+            String SQLQ = "SELECT R.roomNumber, " +
+                    "B.dateFrom, B.dateTo, G.firstName, G.lastName" +
+                    "  FROM rooms    R" +
+                    "  JOIN bookings B ON R.roomID = B.fk_guestID " +
+                    "  JOIN guests   G ON G.guestID = B.fk_guestID";
+
+
+//            st.executeUpdate(SQLC);
+
+
+            ResultSet rs = c.createStatement().executeQuery(SQLQ);
+            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                int j = i;
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(param.getValue().get(j).toString());
+                    }
+                });
+                chart_tableView.getColumns().addAll(col);
+            }
+
+            //ObservableList
+            while (rs.next()) {
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
+
+            chart_tableView.setItems(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        chart_tableView.getColumns().clear();
+        overviewTable();
+
+
+    }
+
+}
 
 
 

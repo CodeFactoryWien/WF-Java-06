@@ -11,7 +11,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -158,6 +161,22 @@ public class HotelfxAccess {
         return list;
     }
 
+    public static String roomStatusByID(int id) throws SQLException {
+        String sql = "SELECT roomstatus.roomStatus FROM rooms " +
+                "INNER JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
+                "WHERE rooms.roomID = " + id;
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        String roomStatus = "";
+
+        while (rs.next()) {
+            roomStatus = rs.getString("roomStatus");
+        }
+
+        pstmnt.close();
+        return roomStatus;
+    }
+
     public static Room getRoomsByID(int roomID) throws SQLException {
         String sql = "SELECT rooms.roomID, rooms.roomNumber, rooms.floor, rooms.description, roomstatus.roomStatus, roomtype.roomType, hotels.hotelName FROM rooms " +
                 "LEFT JOIN roomstatus ON roomstatus.roomStatusID = rooms.fk_roomStatusID " +
@@ -183,6 +202,101 @@ public class HotelfxAccess {
         return room;
     }
 
+
+    public static int saveBooking(Booking booking) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = HotelfxAccess.getInstance().getConn();
+            connection.setAutoCommit(false);
+            String query = "INSERT INTO bookings(bookingID, dateFrom, dateTo, roomCount, fk_guestID, fk_reservationAgentID, fk_bookingStatusID, fk_hotelID) VALUES(DEFAULT, ?, ?, ?, ?, ?, ?, ?)";
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            int counter = 1;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date startDATE = formatter.parse(booking.getStartDate());
+            Date endDATE = formatter.parse(booking.getEndDate());
+            long x = 3600000;
+            Timestamp timestamp = new Timestamp(startDATE.getTime() + x);
+            statement.setTimestamp(counter++, timestamp);
+
+            timestamp = new Timestamp(endDATE.getTime() + x);
+            statement.setTimestamp(counter++, timestamp);
+
+            statement.setInt(counter++, booking.getRoomCount());
+            statement.setInt(counter++, booking.getGuestID());
+            statement.setInt(counter++, booking.getAgentID());
+            statement.setInt(counter++, 1);
+            statement.setInt(counter++, booking.getHotelID());
+
+            statement.executeUpdate();
+            connection.commit();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException | ParseException exception) {
+            logger.log(Level.SEVERE, exception.getMessage());
+        }
+        return 0;
+    }
+
+    public static int saveRoom(int roomID, int bookingId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = HotelfxAccess.getInstance().getConn();
+            connection.setAutoCommit(false);
+            String query = "INSERT INTO roomsbooked(roomsBookedID, roomID, fk_bookingID) VALUES(DEFAULT, ?, ?)";
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            int counter = 1;
+            statement.setInt(counter++, roomID);
+            statement.setInt(counter++, bookingId);
+
+            statement.executeUpdate();
+            connection.commit();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, exception.getMessage());
+        }
+        return 0;
+    }
+
+    public static int savePayment(int roomID, int price, int paymentTypeId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = HotelfxAccess.getInstance().getConn();
+            connection.setAutoCommit(false);
+            String query = "INSERT INTO payments(paymentID, date, payment, fk_roomID, fk_paymentTypeID, fk_paymentStatusID) VALUES(DEFAULT, ?, ?, ?, ?, ?)";
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            int counter = 1;
+            statement.setTimestamp(counter++, new Timestamp(System.currentTimeMillis()));
+            statement.setInt(counter++, price);
+            statement.setInt(counter++, roomID);
+            statement.setInt(counter++, paymentTypeId);
+            statement.setInt(counter++, 1);
+
+            statement.executeUpdate();
+            connection.commit();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, exception.getMessage());
+        }
+        return 0;
+    }
+
     public static List<String> getColumnNames(String sql) throws SQLException {
         List<String> list = new ArrayList<>();
 //        String sql = "SELECT * FROM " + tableName;
@@ -195,6 +309,30 @@ public class HotelfxAccess {
 
         pstmnt.close();
         return list;
+    }
+
+    public static int getPriceByRoomType(String roomType) throws SQLException {
+        String sql = "SELECT roomType.roomTypeDescription FROM roomtype WHERE roomtype.roomType = '" + roomType +"'";
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+
+        int roomTypePrice = 999;
+        while (rs.next()) {
+            roomTypePrice = rs.getInt("roomType.roomTypeDescription");
+        }
+
+        pstmnt.close();
+        return roomTypePrice;
+    }
+
+    public static void updateRoomStatus(int roomID, int newRoomStatus) throws SQLException {
+        String sql = "UPDATE rooms SET rooms.fk_roomStatusID = ? WHERE rooms.roomID = ?";
+        pstmnt = conn.prepareStatement(sql);
+        pstmnt.setInt(1, newRoomStatus);
+        pstmnt.setInt(2, roomID);
+        pstmnt.executeUpdate();
+
+        pstmnt.close();
     }
 
 
