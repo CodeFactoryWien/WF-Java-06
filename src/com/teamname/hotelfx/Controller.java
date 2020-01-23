@@ -15,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -24,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -110,8 +108,6 @@ public class Controller {
     private ComboBox hotelComboBox;
     @FXML
     private TableView<Guest> guest_tableView;
-    @FXML
-    private TableView<Guest> chartTableView;
     @FXML
     private TableView<Room> room_tableView;
     @FXML
@@ -660,7 +656,6 @@ public class Controller {
             /* adds payment types to payment type combo box in check in tab */
             checkInController.paymentComboBox.getItems().setAll(HotelfxAccess.getAllPaymentTypes());
             checkInController.paymentComboBox.getSelectionModel().selectFirst();
-
 
 
         } catch (Exception ignore) {

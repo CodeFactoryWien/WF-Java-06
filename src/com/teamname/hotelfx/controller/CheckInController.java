@@ -1,26 +1,18 @@
 package com.teamname.hotelfx.controller;
 
-import com.teamname.hotelfx.Controller;
-import com.teamname.hotelfx.data.*;
+import com.teamname.hotelfx.data.Booking;
+import com.teamname.hotelfx.data.BookingList;
+import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 public class CheckInController {
     @FXML
@@ -175,9 +167,9 @@ public class CheckInController {
             if(!priceByRoomType.containsKey(roomType)){
                 priceByRoomType.put(roomType, HotelfxAccess.getPriceByRoomType(roomType));
             }
-                int roomPrice = roomTypes.get(roomType) * priceByRoomType.get(roomType);
-                priceDetails.appendText("\n" + roomTypes.get(roomType) + " " + roomType +"("+ priceByRoomType.get(roomType) + ") " + "  =  " + roomPrice + "€");
-                finalPrice += roomPrice;
+            int roomPrice = roomTypes.get(roomType) * priceByRoomType.get(roomType);
+            priceDetails.appendText("\n" + roomTypes.get(roomType) + " " + roomType + "(" + priceByRoomType.get(roomType) + ") " + "  =  " + roomPrice + "€");
+            finalPrice += roomPrice;
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
