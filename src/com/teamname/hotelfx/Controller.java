@@ -693,6 +693,7 @@ public class Controller {
                         guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());
                         hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
                         guest_tableView.getSelectionModel().selectLast();
+                        hotelComboBox.getSelectionModel().selectFirst();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

@@ -48,7 +48,7 @@ CREATE TABLE `bookings` (
   CONSTRAINT `fk_bookings_guests` FOREIGN KEY (`fk_guestID`) REFERENCES `guests` (`guestID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_bookings_hotels1` FOREIGN KEY (`fk_hotelID`) REFERENCES `hotels` (`hotelID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_bookings_reservationAgents` FOREIGN KEY (`fk_reservationAgentID`) REFERENCES `reservationagents` (`reservationAgentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (1,'2019-12-31 23:00:00','2020-01-10 23:00:00','1',1,4,2,1),(2,'2020-02-22 23:00:00','2020-02-18 23:00:00','1',2,1,1,1),(3,'2020-02-24 23:00:00','0000-00-00 00:00:00','1',3,2,1,2),(4,'2020-02-29 23:00:00','2020-03-31 22:00:00','2',4,2,1,2);
+INSERT INTO `bookings` VALUES (1,'2019-12-31 23:00:00','2020-01-10 23:00:00','1',1,4,2,1),(2,'2020-02-22 23:00:00','2020-02-18 23:00:00','1',2,1,1,1),(3,'2020-02-24 23:00:00','0000-00-00 00:00:00','1',3,2,1,2),(4,'2020-02-29 23:00:00','2020-03-31 22:00:00','2',4,2,1,2),(5,'2020-01-23 23:00:00','2020-01-25 23:00:00','3',1,1,1,1),(6,'2020-01-23 23:00:00','2020-02-06 23:00:00','2',3,1,1,1),(7,'2020-01-22 23:00:00','2020-01-25 23:00:00','1',1,1,1,1),(8,'2020-01-23 23:00:00','2020-01-25 23:00:00','1',1,1,1,1),(9,'2020-01-22 23:00:00','2020-01-25 23:00:00','1',1,1,1,1),(10,'2020-01-24 23:00:00','2020-01-30 23:00:00','1',1,1,1,1),(11,'2020-02-06 23:00:00','2020-02-08 23:00:00','1',1,1,1,1);
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +107,7 @@ CREATE TABLE `guests` (
   `emailAddress` varchar(45) NOT NULL,
   `gender` varchar(45) NOT NULL,
   PRIMARY KEY (`guestID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='																	';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='																	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +116,7 @@ CREATE TABLE `guests` (
 
 LOCK TABLES `guests` WRITE;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
-INSERT INTO `guests` VALUES (1,'Alfons','Mob','Rudolfshügel 57 / 23b','Wien','Wien','1160','AUT','+43 83 428 12','rmob@bash.at','M'),(2,'Bonny','Rusk','Upsideroad','New York','New York','49120','US','+01 349 349 21','bonnyrusk@mail.com','F'),(3,'Mandy','Thompson','Westington Road 58 / 23b','London','London','34990','EN','+23 234 432 12','mthompson@mandy.net','F'),(4,'Ruthgard','Zapp','Wellington Road','Sprigfield','Texas','67900','US','+01 333 830 02','rzapp@blond.com','M'),(5,'s','ss','s','s','s','s','ss','s','s','s'),(6,'asd','asd','asd','asd','asd','asd','asd','asd','asd','asd');
+INSERT INTO `guests` VALUES (1,'Alfons','Mob','Rudolfshügel 57 / 23b','Wien','Wien','1160','AUT','+43 83 428 12','rmob@bash.at','M'),(2,'Bonny','Rusk','Upsideroad','New York','New York','49120','US','+01 349 349 21','bonnyrusk@mail.com','F'),(3,'Mandy','Thompson','Westington Road 58 / 23b','London','London','34990','EN','+23 234 432 12','mthompson@mandy.net','F'),(4,'Ruthgard','Zapp','Wellington Road','Sprigfield','Texas','67900','US','+01 333 830 02','rzapp@blond.com','M'),(5,'sdds','sd','sdsd','sds','sdsdsd','ds','dsd','sd','sdsd','sd'),(6,'cx','g','g','g','cx','g','g','g','g','g'),(7,'d','d','d','d','d','d','d','d','d','d'),(8,'s','s','s','s','s','s','s','s','s','s'),(9,'s','s','s','s','s','s','s','s','s','s'),(10,'12','12','h','h','12','h','h','h','h','h');
 /*!40000 ALTER TABLE `guests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +174,7 @@ CREATE TABLE `payments` (
   CONSTRAINT `fk_payments_paymentStatus1` FOREIGN KEY (`fk_paymentTypeID`) REFERENCES `paymenttype` (`paymentTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_payments_paymentStatus2` FOREIGN KEY (`fk_paymentStatusID`) REFERENCES `paymentstatus` (`paymentStatusID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_payments_rooms1` FOREIGN KEY (`fk_roomID`) REFERENCES `rooms` (`roomID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +183,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (1,'2020-01-17 11:31:28','40',6,2,1),(2,'2020-01-17 11:31:28','40',3,1,1),(3,'2020-01-17 11:31:28','40',23,3,1),(4,'2020-01-17 11:31:28','60',24,3,1),(5,'2020-01-17 11:31:28','60',25,2,1);
+INSERT INTO `payments` VALUES (1,'2020-01-23 10:13:22','',6,2,1),(2,'2020-01-23 10:15:09','',3,1,1),(3,'2020-01-23 10:15:19','',23,3,1),(4,'2020-01-23 10:15:22','',24,3,1),(5,'2020-01-23 10:15:25','',25,2,1),(6,'2020-01-23 10:36:55','120',1,1,1),(7,'2020-01-23 11:38:25','240',1,1,1),(8,'2020-01-23 11:39:19','80',1,1,1);
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,7 +375,7 @@ CREATE TABLE `roomsbooked` (
   KEY `fk_roomsBooked_bookings1_idx` (`fk_bookingID`),
   CONSTRAINT `fk_roomsBooked_bookings` FOREIGN KEY (`fk_bookingID`) REFERENCES `bookings` (`bookingID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_roomsBooked_rooms` FOREIGN KEY (`roomID`) REFERENCES `rooms` (`roomID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,7 +384,7 @@ CREATE TABLE `roomsbooked` (
 
 LOCK TABLES `roomsbooked` WRITE;
 /*!40000 ALTER TABLE `roomsbooked` DISABLE KEYS */;
-INSERT INTO `roomsbooked` VALUES (1,6,1),(2,3,2),(3,23,3),(4,24,4),(5,25,4);
+INSERT INTO `roomsbooked` VALUES (1,6,1),(2,3,2),(3,23,3),(4,24,4),(5,25,4),(6,1,5),(7,15,5),(8,17,5),(9,13,6),(10,12,6),(11,1,7),(12,1,8),(13,1,9),(14,1,10),(15,1,11);
 /*!40000 ALTER TABLE `roomsbooked` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,7 +424,7 @@ DROP TABLE IF EXISTS `roomtype`;
 CREATE TABLE `roomtype` (
   `roomTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `roomType` varchar(45) NOT NULL,
-  `roomTypeDescription` varchar(45) NOT NULL,
+  `roomTypeDescription` int(11) NOT NULL,
   `roomTypeActive` tinyint(4) NOT NULL,
   PRIMARY KEY (`roomTypeID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
@@ -436,7 +436,7 @@ CREATE TABLE `roomtype` (
 
 LOCK TABLES `roomtype` WRITE;
 /*!40000 ALTER TABLE `roomtype` DISABLE KEYS */;
-INSERT INTO `roomtype` VALUES (1,'PRIME','prime equipment',1),(2,'COMFORT','comfot equipment',1),(3,'STANDARD','standard equipment',1),(4,'BASIC','basic equipment',1);
+INSERT INTO `roomtype` VALUES (1,'PRIME',100,1),(2,'COMFORT',80,1),(3,'STANDARD',60,1),(4,'BASIC',40,1);
 /*!40000 ALTER TABLE `roomtype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,4 +512,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-23 12:04:50
+-- Dump completed on 2020-01-23 14:00:48
