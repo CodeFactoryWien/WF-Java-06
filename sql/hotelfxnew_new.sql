@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Jan 2020 um 14:14
+-- Erstellungszeit: 23. Jan 2020 um 16:54
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -39,22 +39,6 @@ CREATE TABLE `bookings` (
   `fk_hotelID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Daten für Tabelle `bookings`
---
-
-INSERT INTO `bookings` (`bookingID`, `dateFrom`, `dateTo`, `roomCount`, `fk_guestID`, `fk_reservationAgentID`, `fk_bookingStatusID`, `fk_hotelID`) VALUES
-(1, '2019-12-31 23:00:00', '2020-01-10 23:00:00', '1', 1, 4, 2, 1),
-(2, '2020-02-22 23:00:00', '2020-02-18 23:00:00', '1', 2, 1, 1, 1),
-(3, '2020-02-24 23:00:00', '0000-00-00 00:00:00', '1', 3, 2, 1, 2),
-(4, '2020-02-29 23:00:00', '2020-03-31 22:00:00', '2', 4, 2, 1, 2),
-(5, '2020-01-23 23:00:00', '2020-01-25 23:00:00', '3', 1, 1, 1, 1),
-(6, '2020-01-23 23:00:00', '2020-02-06 23:00:00', '2', 3, 1, 1, 1),
-(7, '2020-01-22 23:00:00', '2020-01-25 23:00:00', '1', 1, 1, 1, 1),
-(8, '2020-01-23 23:00:00', '2020-01-25 23:00:00', '1', 1, 1, 1, 1),
-(9, '2020-01-22 23:00:00', '2020-01-25 23:00:00', '1', 1, 1, 1, 1),
-(10, '2020-01-24 23:00:00', '2020-01-30 23:00:00', '1', 1, 1, 1, 1),
-(11, '2020-02-06 23:00:00', '2020-02-08 23:00:00', '1', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -149,20 +133,6 @@ CREATE TABLE `payments` (
   `fk_paymentTypeID` int(11) NOT NULL,
   `fk_paymentStatusID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `payments`
---
-
-INSERT INTO `payments` (`paymentID`, `date`, `payment`, `fk_roomID`, `fk_paymentTypeID`, `fk_paymentStatusID`) VALUES
-(1, '2020-01-23 10:13:22', '', 6, 2, 1),
-(2, '2020-01-23 10:15:09', '', 3, 1, 1),
-(3, '2020-01-23 10:15:19', '', 23, 3, 1),
-(4, '2020-01-23 10:15:22', '', 24, 3, 1),
-(5, '2020-01-23 10:15:25', '', 25, 2, 1),
-(6, '2020-01-23 10:36:55', '120', 1, 1, 1),
-(7, '2020-01-23 11:38:25', '240', 1, 1, 1),
-(8, '2020-01-23 11:39:19', '80', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -309,10 +279,10 @@ INSERT INTO `rooms` (`roomID`, `floor`, `roomNumber`, `description`, `fk_hotelID
 (23, 1, '003', '-', 2, 2, 4),
 (24, 1, '004', '-', 2, 2, 3),
 (25, 1, '005', '-', 2, 2, 3),
-(26, 2, '006', '-', 2, 1, 3),
-(27, 2, '007', '-', 2, 1, 2),
-(28, 2, '008', '-', 2, 1, 2),
-(29, 2, '009', '-', 2, 1, 2),
+(26, 2, '006', '-', 2, 2, 3),
+(27, 2, '007', '-', 2, 2, 2),
+(28, 2, '008', '-', 2, 2, 2),
+(29, 2, '009', '-', 2, 2, 2),
 (30, 2, '010', '-', 2, 1, 2),
 (31, 3, '011', '-', 2, 3, 2),
 (32, 3, '012', '-', 2, 3, 2),
@@ -340,27 +310,6 @@ CREATE TABLE `roomsbooked` (
   `roomID` int(11) NOT NULL,
   `fk_bookingID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `roomsbooked`
---
-
-INSERT INTO `roomsbooked` (`roomsBookedID`, `roomID`, `fk_bookingID`) VALUES
-(1, 6, 1),
-(2, 3, 2),
-(3, 23, 3),
-(4, 24, 4),
-(5, 25, 4),
-(6, 1, 5),
-(7, 15, 5),
-(8, 17, 5),
-(9, 13, 6),
-(10, 12, 6),
-(11, 1, 7),
-(12, 1, 8),
-(13, 1, 9),
-(14, 1, 10),
-(15, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -584,7 +533,7 @@ ALTER TABLE `staffrooms`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT für Tabelle `bookingstatus`
@@ -608,7 +557,7 @@ ALTER TABLE `hotels`
 -- AUTO_INCREMENT für Tabelle `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT für Tabelle `paymentstatus`
@@ -650,7 +599,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT für Tabelle `roomsbooked`
 --
 ALTER TABLE `roomsbooked`
-  MODIFY `roomsBookedID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `roomsBookedID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT für Tabelle `roomstatus`

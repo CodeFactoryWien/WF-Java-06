@@ -402,18 +402,18 @@ public class HotelfxAccess {
         return roomList;
     }
 
-    public static String getAllRoomsByBookingIDINT (int bookingID) throws SQLException {
+    public static List<String> getAllRoomsByBookingIDINT (int bookingID) throws SQLException {
         // String sql = "Select roomID from roomsbooked where fk_bookingID = 1";
         String sql = "Select roomID from roomsbooked where fk_bookingID = " + bookingID;
         pstmnt = conn.prepareStatement(sql);
         ResultSet rs = pstmnt.executeQuery();
-        String roomID = "";
+        List<String> roomList = FXCollections.observableArrayList();
         while (rs.next()) {
-            roomID = String.valueOf(rs.getInt("roomID"));
-
+            String roomID = String.valueOf(rs.getInt("roomID"));
+            roomList.add(roomID);
         }
         pstmnt.close();
-        return roomID;
+        return roomList;
     }
 
     private static final String bookings = "bookings";
