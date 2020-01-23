@@ -1,6 +1,7 @@
 package com.teamname.hotelfx;
 
 import com.teamname.hotelfx.controller.CheckInController;
+import com.teamname.hotelfx.controller.CheckOutController;
 import com.teamname.hotelfx.data.*;
 import com.teamname.hotelfx.dbAccess.BackupScheduler;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
@@ -102,10 +103,12 @@ public class Controller {
     public AnchorPane chartTableAnchor;
     @FXML
     private CheckInController checkInController;
+    @FXML
+    private CheckOutController checkOutController;
     //    @FXML
 //    private ChartTableController chartTableController;
     @FXML
-    private ComboBox hotelComboBox;
+    private ComboBox<String> hotelComboBox;
     @FXML
     private TableView<Guest> guest_tableView;
     @FXML
@@ -128,6 +131,8 @@ public class Controller {
     private ToggleButton connectBtn;
     @FXML
     private Label labelConnect;
+    @FXML
+    public Tab checkOutTab;
 
 
     private List<Guest> listGuest = FXCollections.observableArrayList();
@@ -670,6 +675,8 @@ public class Controller {
             clearTextFields(guest_gridPane);
         });
 
+
+
         room_clearBtn.setOnAction(event -> {
             clearTextFields(room_gridPane);
         });
@@ -685,6 +692,7 @@ public class Controller {
                 e.printStackTrace();
             }
         });
+
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab != null) {
@@ -703,9 +711,17 @@ public class Controller {
                 if (newTab.equals(checkInTab)) {
                         checkInController.getBookings_tableView().getSelectionModel().selectLast();
 
+                }else if(newTab.equals(checkOutTab)) {
+                    try {
+                        checkOutController.getBookings_tableView().getItems().setAll(HotelfxAccess.getAllBookings());
+                        checkOutController.getBookings_tableView().getSelectionModel().selectLast();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
+
 
 
     }
