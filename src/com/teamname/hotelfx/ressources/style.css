@@ -43,11 +43,17 @@
 
 .root {
     //css instructions here
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #ffffff;
     -fx-blend-mode:difference;
     -fx-opacity:0.9;
 }
 .text {
     -fx-fill: #000000;
     -fx-stroke-width: 100px;
+}
+
+.priceDetails {
+    -fx-padding: 0;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
 }

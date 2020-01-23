@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -23,14 +24,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -303,35 +308,63 @@ public class Controller {
 
     }
 
-    public void saveTextFieldsRooms() {
+    public void saveTextFieldsRooms() throws SQLException, ParseException {
         getTextFieldData("room");
 
         int c = 1;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDATE = formatter.parse(textFieldData.get("startDate"));
+        Date endDATE = formatter.parse(textFieldData.get("endDate"));
         boolean filledOut = false;
+        
         for (String i : textFieldData.values()) {
             if (c == textFieldData.size()) {
                 filledOut = true;
             } else if (i.equals("null")) {
                 this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
                 break;
+            }else if(!(checkInController.getDateDifference(startDATE, endDATE, TimeUnit.DAYS) > 0)){
+                this.alert("Error", "Please enter a valid date!", Alert.AlertType.ERROR);
+                break;
             }else if (!StringPool.BLANK.equals(i)) {
                 c++;
-            } else {
+            }
+            else {
                 this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
                 break;
             }
         }
+        
         if (filledOut) {
-            if (checkIfBookingExists(Integer.parseInt(guest_ID.getText()))) {
+             if(checkIfRoomIsUsed(room_tableView.getSelectionModel().getSelectedItem().getRoomID())) {
+                this.alert("Error", "Room is either already in Check In or not usable right now.", Alert.AlertType.ERROR);
+            } else if (checkIfBookingExists(Integer.parseInt(guest_ID.getText()))) {
                 Booking booking = new Booking(textFieldData.get("startDate"), textFieldData.get("endDate"),
                         Integer.parseInt(textFieldData.get("guestID")), 1, Integer.parseInt(textFieldData.get("hotelID")));
 
-                booking.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
+                booking.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
                 BookingList.getInstance().getBookingList().add(booking);
+                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+                 this.alert("Success", "Room saved to Check In!", Alert.AlertType.INFORMATION);
+                 try {
+                    checkInController.calculatePrice(booking);
+                } catch (SQLException | ParseException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Booking b = loopBookings(guest_tableView.getSelectionModel().getSelectedItem().getGuestID());
-                b.getRoomCount().add(room_tableView.getSelectionModel().getSelectedItem());
+                b.setStartDate(textFieldData.get("startDate"));
+                b.setEndDate(textFieldData.get("endDate"));
+                b.getRoomCountList().add(room_tableView.getSelectionModel().getSelectedItem());
+                checkInController.getBookings_tableView().getItems().setAll(BookingList.getInstance().getBookingList());
+                 this.alert("Success", "Room saved to already created booking in Check in!", Alert.AlertType.INFORMATION);
+                 try {
+                    checkInController.calculatePrice(b);
+                } catch (SQLException | ParseException e) {
+                    e.printStackTrace();
+                }
             }
+
         }
     }
 
@@ -385,6 +418,24 @@ public class Controller {
             }
         }
         return bExists;
+    }
+
+    public  boolean checkIfRoomIsUsed(int roomID) throws SQLException {
+        boolean rExists = false;
+        for (Booking booking:BookingList.getInstance().getBookingList()) {
+            for (Room room:booking.getRoomCountList()) {
+                System.out.println(HotelfxAccess.roomStatusByID(roomID));
+                if(room.getRoomID() == roomID){
+                    System.out.println(HotelfxAccess.roomStatusByID(roomID));
+                    rExists = true;
+                    break;
+                }
+            }
+        }
+        if(!(HotelfxAccess.roomStatusByID(roomID).equals("FREE"))){
+            rExists = true;
+        }
+        return rExists;
     }
 
     public Booking loopBookings (int guestID){
@@ -553,8 +604,8 @@ public class Controller {
         hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
             if (newHotel != null) {
                 try {
-                    room_tableView.getItems().setAll(HotelfxAccess.getInstance().getAllRooms(newHotel));
-                    listRoom = HotelfxAccess.getInstance().getAllRooms(newHotel);
+                    room_tableView.getItems().setAll(HotelfxAccess.getAllRooms(newHotel));
+                    listRoom = HotelfxAccess.getAllRooms(newHotel);
                     room_tableView.getSelectionModel().selectFirst();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -596,15 +647,16 @@ public class Controller {
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
             /* add guests data to guest tableView*/
-            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());                                    //-------RECONNECT
-
-            /*connect in application booking list to check in booking tableView*/
-            checkInController.getBookings_tableView().setItems(BookingList.getInstance().getBookingList());
-
+            guest_tableView.getItems().setAll(HotelfxAccess.getAllGuests());//-------RECONNECT
 
 
             /*add hotels form database to chotel omboBox*/
             hotelComboBox.getItems().setAll(HotelfxAccess.getAllHotels());
+
+            /* adds payment types to payment type combo box in check in tab */
+            checkInController.paymentComboBox.getItems().setAll(HotelfxAccess.getAllPaymentTypes());
+            checkInController.paymentComboBox.getSelectionModel().selectFirst();
+
 
 
         } catch (Exception ignore) {
@@ -628,16 +680,23 @@ public class Controller {
         });
 
         room_saveBtn.setOnAction(event -> {
-            saveTextFieldsRooms();
+            try {
+                saveTextFieldsRooms();
+            } catch (SQLException | ParseException e) {
+                e.printStackTrace();
+            }
         });
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab != null) {
                 if (newTab.getId().equals("checkInTab")) {
                         checkInController.getBookings_tableView().getSelectionModel().selectLast();
+
                 }
             }
         });
+
+
     }
 
 

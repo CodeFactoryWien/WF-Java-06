@@ -14,18 +14,22 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.TextArea?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.teamname.hotelfx.controller.CheckInController"
-            prefHeight="400.0" prefWidth="600.0">
+            >
 
 
     <left>
-        <VBox spacing="0">
+        <VBox spacing="40">
+            <padding>
+                <Insets left="30" top="30" bottom="30" right="30"/>
+            </padding>
             <GridPane fx:id="booking_gridPane" hgap="7" vgap="4">
-                <padding>
-                    <Insets left="30" top="30" right="30" bottom="30"/>
-                </padding>
+<!--                <padding>-->
+<!--                    <Insets left="30" top="30" right="30" bottom="30"/>-->
+<!--                </padding>-->
 
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="0"
                        GridPane.columnSpan="2" text="Booking Details" GridPane.halignment="CENTER"/>
@@ -36,48 +40,51 @@
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="3"
                        GridPane.halignment="RIGHT" text="Guest ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="4"
-                       GridPane.halignment="RIGHT" text="Agent ID: "/>
+                       GridPane.halignment="RIGHT" text="Room Count: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="5"
-                       GridPane.halignment="RIGHT" text="Hotel ID: "/>
+                       GridPane.halignment="RIGHT" text="Agent ID: "/>
                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
-                       GridPane.halignment="RIGHT" text="City: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="7"
-                       GridPane.halignment="RIGHT" text="Zip Code: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="8"
-                       GridPane.halignment="RIGHT" text="Country: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="9"
-                       GridPane.halignment="RIGHT" text="Phone number: "/>
-                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="10"
-                       GridPane.halignment="RIGHT" text="Email: "/>
+                       GridPane.halignment="RIGHT" text="Hotel ID: "/>
+                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="12"
+                       GridPane.halignment="RIGHT" text="Price details: "/>
+                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="13"
+                       GridPane.halignment="RIGHT" text="Full price: "/>
+                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="15"
+                       GridPane.halignment="RIGHT" text="Payment type: "/>
 
                 <!-- Toggle Button -->
 
                 <TextField fx:id="guest_ID" visible="false" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_firstName" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_lastName" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_gender" GridPane.columnIndex="1" GridPane.rowIndex="3"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_address" GridPane.columnIndex="1" GridPane.rowIndex="4"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="7"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="8"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="9"
-                           GridPane.halignment="RIGHT"/>
-                <TextField fx:id="guest_email" GridPane.columnIndex="1" GridPane.rowIndex="10"
-                           GridPane.halignment="RIGHT"/>
+                           GridPane.rowIndex="1" GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="startDate" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="endDate" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                           GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="guestID" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                           GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="roomCount" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                           GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="agentID" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT" editable="false"/>
+                <TextField fx:id="hotelID" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT" editable="false"/>
 
-                <HBox GridPane.columnIndex="1" GridPane.rowIndex="11" spacing="15" GridPane.halignment="CENTER">
-                    <Button fx:id="guest_saveBtn" text="Save"/>
-                    <Button fx:id="guest_clearBtn" text="Clear"/>
+                <TextArea fx:id="priceDetails" wrapText="true" maxWidth="150" prefHeight="140" GridPane.columnIndex="1" GridPane.rowIndex="12" styleClass="priceDetails" editable="false"/>
+                <TextField fx:id="fullPrice" GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.halignment="RIGHT" editable="false"/>
+
+                <ComboBox fx:id="paymentComboBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="20" spacing="15" GridPane.halignment="CENTER">
+                    <Button fx:id="booking_saveBtn" text="Save"/>
+                    <Button fx:id="booking_deleteBtn" text="Delete"/>
                 </HBox>
+
             </GridPane>
+
+
         </VBox>
     </left>
 
