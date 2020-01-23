@@ -16,6 +16,7 @@ import javafx.util.Callback;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -44,25 +45,42 @@ public class ChartTableController implements Initializable {
             c = HotelfxAccess.getDBConnection();
 
 //            String SQLC = "create table update";
-//              String SQLQ = "SELECT bookings.dateFrom, bookings.dateTo FROM bookings";
-            String SQLQ = "SELECT R.roomNumber, " +
-                    "B.dateFrom, B.dateTo, G.firstName, G.lastName" +
-                    "  FROM rooms    R" +
-                    "  JOIN bookings B ON R.roomID = B.fk_guestID " +
-                    "  JOIN guests   G ON G.guestID = B.fk_guestID";
+//              String SQLQ = "SELECT R.roomID,\n" +
+//                      "B.dateFrom, B.dateTo, G.firstName, G.lastName\n" +
+//                      "FROM rooms  IS FALSE       R\n" +
+//                      "LEFT JOIN roomsbooked RB ON R.roomID       = RB.roomID IS NOT null\n" +
+//                      "LEFT JOIN bookings    B ON RB.fk_bookingID = B.bookingID IS NOT null\n" +
+//                      "LEFT JOIN guests      G ON G.guestID       = B.fk_guestID IS NOT null\n" +
+//                      "ORDER BY R.roomID";
+            String SQLQ = "SELECT rooms.roomNumber, bookings.dateFrom, bookings.dateTo, guests.firstName, guests.lastName " +
+                    "FROM rooms " +
+                    "LEFT JOIN roomsbooked ON rooms.roomID = roomsbooked.roomID " +
+                    "LEFT JOIN bookings ON roomsbooked.fk_bookingID = bookings.bookingID " +
+                    "LEFT JOIN guests ON guests.guestID       = bookings.fk_guestID";
 
-
-//            st.executeUpdate(SQLC);
+            //st.executeUpdate(SQLC);
 
 
             ResultSet rs = c.createStatement().executeQuery(SQLQ);
+            System.out.println(rs.getMetaData().getColumnCount());
+
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+
+                System.out.println("Hello");
                 int j = i;
                 TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+//                System.out.println(rs.getMetaData().getColumnName(i + 1));
 
                 col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
                     public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
+                    }
+                });
+                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+
+                    @Override
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(Objects.toString(param.getValue().get(j), "----"));
                     }
                 });
                 chart_tableView.getColumns().addAll(col);
@@ -70,11 +88,15 @@ public class ChartTableController implements Initializable {
 
             //ObservableList
             while (rs.next()) {
+//                ResultSet columns = c.getMetaData().getColumns(null, null, null, null);
+                System.out.println(">>>>>>> >");
                 ObservableList<String> row = FXCollections.observableArrayList();
+
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     row.add(rs.getString(i));
                 }
                 data.add(row);
+
             }
 
             chart_tableView.setItems(data);
