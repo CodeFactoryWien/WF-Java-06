@@ -204,6 +204,7 @@ public class Controller {
         } else {
             glass = "";
             glassBtn.setText("GLASSMODE OFF");
+            stage.setAlwaysOnTop(false);
             stage.setTitle("Hotel FX");
             stage.setOpacity(1);
             stage.setTitle(stage.getTitle() + glass + night);

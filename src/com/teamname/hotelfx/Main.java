@@ -20,13 +20,13 @@ public class Main extends Application {
 
         // change with FXMLDocument.fxml for logging try error
 
-        Parent root = FXMLLoader.load(getClass().getResource("bookingWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ressources/icon.png")));
         primaryStage.setTitle("Hotel FX");
         primaryStage.setScene(new Scene(root));
 
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
         primaryStage.show();
     }
 
