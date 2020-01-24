@@ -1,4 +1,5 @@
 package com.teamname.hotelfx;
+
 import com.teamname.hotelfx.dbAccess.Backup;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.application.Application;
@@ -18,6 +19,7 @@ public class Main extends Application {
         System.setProperty("prism.text", "t2k");
 
         // change with FXMLDocument.fxml for logging try error
+
         Parent root = FXMLLoader.load(getClass().getResource("bookingWindow.fxml"));
         root.getStylesheets().add(getClass().getResource("ressources/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ressources/icon.png")));

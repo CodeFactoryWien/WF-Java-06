@@ -1,6 +1,6 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedAreaChart?>
+<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:controller="com.teamname.hotelfx.controller.ChartTableController" xmlns:fx="http://javafx.com/fxml">
@@ -18,15 +18,16 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
             </TableView>
-            <StackedAreaChart fx:id="areaChart" layoutX="25.0" layoutY="330.0" minWidth="800" maxHeight="320"
-                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                              AnchorPane.topAnchor="250.0">
+            <StackedBarChart fx:id="areaChart" layoutX="25.0" layoutY="330.0" minWidth="800" maxHeight="320"
+                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                             AnchorPane.topAnchor="250.0">
+
                 <xAxis>
-                    <CategoryAxis side="BOTTOM"/>
+                    <NumberAxis/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT"/>
+                    <CategoryAxis layoutX="10.0" side="LEFT" fx:id="yAxis"/>
                 </yAxis>
-            </StackedAreaChart>
+            </StackedBarChart>
         </children>
 </AnchorPane>
