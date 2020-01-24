@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Jan 2020 um 16:54
+-- Erstellungszeit: 24. Jan 2020 um 10:55
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -39,6 +39,18 @@ CREATE TABLE `bookings` (
   `fk_hotelID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Daten für Tabelle `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `dateFrom`, `dateTo`, `roomCount`, `fk_guestID`, `fk_reservationAgentID`, `fk_bookingStatusID`, `fk_hotelID`) VALUES
+(29, '2020-01-24 23:00:00', '2020-01-27 23:00:00', '1', 1, 1, 1, 1),
+(30, '2020-01-22 23:00:00', '2020-01-29 23:00:00', '3', 11, 1, 1, 1),
+(31, '2020-01-22 23:00:00', '2020-02-28 23:00:00', '1', 5, 1, 1, 1),
+(32, '2020-01-21 23:00:00', '2020-02-24 23:00:00', '1', 6, 1, 1, 1),
+(33, '2020-01-19 23:00:00', '2020-02-25 23:00:00', '1', 7, 1, 1, 1),
+(34, '2020-01-22 23:00:00', '2020-02-01 23:00:00', '1', 12, 1, 1, 1),
+(35, '2020-01-12 23:00:00', '2020-01-30 23:00:00', '2', 9, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -89,7 +101,15 @@ INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `address`, `city`, `st
 (1, 'Alfons', 'Mob', 'Rudolfshügel 57 / 23b', 'Wien', 'Wien', '1160', 'AUT', '+43 83 428 12', 'rmob@bash.at', 'M'),
 (2, 'Bonny', 'Rusk', 'Upsideroad', 'New York', 'New York', '49120', 'US', '+01 349 349 21', 'bonnyrusk@mail.com', 'F'),
 (3, 'Mandy', 'Thompson', 'Westington Road 58 / 23b', 'London', 'London', '34990', 'EN', '+23 234 432 12', 'mthompson@mandy.net', 'F'),
-(4, 'Ruthgard', 'Zapp', 'Wellington Road', 'Sprigfield', 'Texas', '67900', 'US', '+01 333 830 02', 'rzapp@blond.com', 'M');
+(4, 'Ruthgard', 'Zapp', 'Wellington Road', 'Sprigfield', 'Texas', '67900', 'US', '+01 333 830 02', 'rzapp@blond.com', 'M'),
+(5, 'Mark', 'Batra', 'Obere Straße 12', 'Wien', 'Wien', '1220', 'AUT', '+01 223 452 12', 'mBatra@bash.at', 'M'),
+(6, 'Klemenz', 'Josir', 'Am Ring 1', 'Wien', 'Wien', '1010', 'AUT', '+0663 030 040 02', 'kJosira@bash.at', 'M'),
+(7, 'Magdalena', 'Wurfer', 'Linke Straße 10', 'Wien', 'Wien', '1100', 'AUT', '+01 223 002 23', 'mWurfer@bash.at', 'F'),
+(8, 'Katharina', 'Mast', 'Dorfstraße 114', 'Salzburg', 'Salzburg', '2345', 'AUT', '+43 999 223 00', 'kMast@bash.at', 'F'),
+(9, 'Leo', 'Koll', 'Lasknergasse 23', 'Linz', 'Oberösterreich', '10212', 'AUT', '+43 923 923 02', 'lKoll@bash.at', 'M'),
+(10, 'Maria', 'Anler', 'Fischgasse 13', 'Wien', 'Wien', '1020', 'AUT', '0660 222 222 22', 'mAnler@bash.at', 'F'),
+(11, 'Ted', 'Garp', 'Spring Road 22', 'London', 'London', '35555', 'EN', '+23 222 830 02', 'tGarp@blond.com', 'M'),
+(12, 'Fred', 'Glocke', 'Kurze Straße 45', 'Salzburg', 'Salzburg', '34002', 'AUT', '+43 340 000 99', 'fGlocke@bash.at', 'M');
 
 -- --------------------------------------------------------
 
@@ -133,6 +153,22 @@ CREATE TABLE `payments` (
   `fk_paymentTypeID` int(11) NOT NULL,
   `fk_paymentStatusID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `payments`
+--
+
+INSERT INTO `payments` (`paymentID`, `date`, `payment`, `fk_roomID`, `fk_paymentTypeID`, `fk_paymentStatusID`) VALUES
+(26, '2020-01-24 08:47:16', '120', 1, 1, 1),
+(27, '2020-01-24 08:48:10', '840', 2, 1, 1),
+(28, '2020-01-24 08:48:10', '840', 5, 1, 1),
+(29, '2020-01-24 08:48:10', '840', 8, 1, 1),
+(30, '2020-01-24 08:51:22', '1480', 3, 1, 1),
+(31, '2020-01-24 08:51:25', '2040', 14, 1, 1),
+(32, '2020-01-24 08:51:26', '1480', 7, 1, 1),
+(33, '2020-01-24 08:51:28', '600', 11, 1, 1),
+(34, '2020-01-24 08:52:03', '2160', 12, 1, 1),
+(35, '2020-01-24 08:52:03', '2160', 13, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -256,7 +292,7 @@ CREATE TABLE `rooms` (
 INSERT INTO `rooms` (`roomID`, `floor`, `roomNumber`, `description`, `fk_hotelID`, `fk_roomStatusID`, `fk_roomTypeID`) VALUES
 (1, 1, '001', '-', 1, 1, 4),
 (2, 1, '002', '-', 1, 1, 4),
-(3, 1, '003', '-', 1, 2, 4),
+(3, 1, '003', '-', 1, 1, 4),
 (4, 1, '004', '-', 1, 1, 4),
 (5, 1, '005', '-', 1, 1, 4),
 (6, 2, '006', '-', 1, 1, 4),
@@ -276,13 +312,13 @@ INSERT INTO `rooms` (`roomID`, `floor`, `roomNumber`, `description`, `fk_hotelID
 (20, 4, '020', '-', 1, 3, 1),
 (21, 1, '001', '-', 2, 1, 4),
 (22, 1, '002', '-', 2, 1, 4),
-(23, 1, '003', '-', 2, 2, 4),
-(24, 1, '004', '-', 2, 2, 3),
-(25, 1, '005', '-', 2, 2, 3),
-(26, 2, '006', '-', 2, 2, 3),
-(27, 2, '007', '-', 2, 2, 2),
-(28, 2, '008', '-', 2, 2, 2),
-(29, 2, '009', '-', 2, 2, 2),
+(23, 1, '003', '-', 2, 1, 4),
+(24, 1, '004', '-', 2, 1, 3),
+(25, 1, '005', '-', 2, 1, 3),
+(26, 2, '006', '-', 2, 1, 3),
+(27, 2, '007', '-', 2, 1, 2),
+(28, 2, '008', '-', 2, 1, 2),
+(29, 2, '009', '-', 2, 1, 2),
 (30, 2, '010', '-', 2, 1, 2),
 (31, 3, '011', '-', 2, 3, 2),
 (32, 3, '012', '-', 2, 3, 2),
@@ -310,6 +346,22 @@ CREATE TABLE `roomsbooked` (
   `roomID` int(11) NOT NULL,
   `fk_bookingID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `roomsbooked`
+--
+
+INSERT INTO `roomsbooked` (`roomsBookedID`, `roomID`, `fk_bookingID`) VALUES
+(33, 1, 29),
+(34, 2, 30),
+(35, 5, 30),
+(36, 8, 30),
+(37, 3, 31),
+(38, 14, 32),
+(39, 7, 33),
+(40, 11, 34),
+(41, 12, 35),
+(42, 13, 35);
 
 -- --------------------------------------------------------
 
@@ -533,7 +585,7 @@ ALTER TABLE `staffrooms`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT für Tabelle `bookingstatus`
@@ -545,7 +597,7 @@ ALTER TABLE `bookingstatus`
 -- AUTO_INCREMENT für Tabelle `guests`
 --
 ALTER TABLE `guests`
-  MODIFY `guestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `guestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT für Tabelle `hotels`
@@ -557,7 +609,7 @@ ALTER TABLE `hotels`
 -- AUTO_INCREMENT für Tabelle `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT für Tabelle `paymentstatus`
@@ -599,7 +651,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT für Tabelle `roomsbooked`
 --
 ALTER TABLE `roomsbooked`
-  MODIFY `roomsBookedID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `roomsBookedID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT für Tabelle `roomstatus`
