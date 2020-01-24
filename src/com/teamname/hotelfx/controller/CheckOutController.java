@@ -8,7 +8,9 @@ import javafx.scene.control.*;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CheckOutController {
@@ -85,16 +87,21 @@ public class CheckOutController {
         booking_updateBtn.setOnAction(event -> {
             try {
                 HotelfxAccess.updateBooking(bookings_tableView.getSelectionModel().getSelectedItem().getBookingID());
-                bookings_tableView.getItems().setAll(HotelfxAccess.getAllBookings());
                 List<String> roomList = new ArrayList<>();
                 roomList.add(HotelfxAccess.getAllRoomsByBookingIDINT(bookings_tableView.getSelectionModel().getSelectedItem().getBookingID()));
+
                 for (String string : roomList) {
-                    HotelfxAccess.updateRoomStatus(Integer.parseInt(string), 1);
+                    if(!HotelfxAccess.checkIfRoomIsInBooking(Integer.parseInt(string))){
+                        HotelfxAccess.updateRoomStatus(Integer.parseInt(string), 1);
+                    }
                 }
+
+                bookings_tableView.getItems().setAll(HotelfxAccess.getAllBookings());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
+
     }
 
 

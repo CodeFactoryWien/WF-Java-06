@@ -1,5 +1,6 @@
 package com.teamname.hotelfx.controller;
 
+import com.mysql.cj.exceptions.CJConnectionFeatureNotAvailableException;
 import com.teamname.hotelfx.data.Booking;
 import com.teamname.hotelfx.data.BookingList;
 import com.teamname.hotelfx.data.Room;
@@ -113,6 +114,10 @@ public class CheckInController {
         booking_saveBtn.setOnAction(event -> {
             if(bookings_tableView.getItems().size() > 0) {
                 try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date startDATE = formatter.parse(startDate.getText());
+                    Date todayDate = formatter.parse(formatter.format(new Date()));
+
                     int bookingID = HotelfxAccess.saveBooking((Booking) bookings_tableView.getSelectionModel().getSelectedItem());
                     if (bookingID > 0) {
                         Booking booking = (Booking) bookings_tableView.getSelectionModel().getSelectedItem();
@@ -121,10 +126,13 @@ public class CheckInController {
                             int price = Integer.parseInt(fullPrice.getText().substring(0, fullPrice.getText().length() - 1));
                             int paymentID = HotelfxAccess.savePayment(room.getRoomID(), price,
                                             paymentComboBox.getSelectionModel().getSelectedIndex() + 1);
-                            HotelfxAccess.updateRoomStatus(room.getRoomID(), 2);
+
                             if(roomid < 1 || paymentID < 1){
                                 this.alert("Error", "Failed!", Alert.AlertType.ERROR);
                                 break;
+                            }
+                            if(todayDate.equals(startDATE)){
+                                HotelfxAccess.updateRoomStatus(room.getRoomID(), 2);
                             }
                         }
                         this.alert("Save", "Successful!", Alert.AlertType.INFORMATION);

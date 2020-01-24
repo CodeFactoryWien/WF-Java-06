@@ -49,9 +49,9 @@
                                        GridPane.halignment="RIGHT" text="Gender: "/>
                                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="4"
                                        GridPane.halignment="RIGHT" text="Address: "/>
-                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
-                                       GridPane.halignment="RIGHT" text="State: "/>
                                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="5"
+                                       GridPane.halignment="RIGHT" text="State: "/>
+                                <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="6"
                                        GridPane.halignment="RIGHT" text="City: "/>
                                 <Label GridPane.columnIndex="0" styleClass="text-id" GridPane.rowIndex="7"
                                        GridPane.halignment="RIGHT" text="Zip Code: "/>
@@ -78,8 +78,8 @@
                                            GridPane.halignment="RIGHT"/>
                                 <TextField fx:id="guest_address" GridPane.columnIndex="1" GridPane.rowIndex="4"
                                            GridPane.halignment="RIGHT"/>
-                                <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
-                                <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
+                                <TextField fx:id="guest_state" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
+                                <TextField fx:id="guest_city" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
                                 <TextField fx:id="guest_zipCode" GridPane.columnIndex="1" GridPane.rowIndex="7"
                                            GridPane.halignment="RIGHT"/>
                                 <TextField fx:id="guest_country" GridPane.columnIndex="1" GridPane.rowIndex="8"
@@ -125,10 +125,10 @@
                                            GridPane.halignment="RIGHT"/>
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" text="Start date: "/>
-                                <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" editable="false"/>
 
                                 <Label GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="End date: "/>
-                                <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="6" editable="false"/>
 
                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" spacing="15" GridPane.halignment="CENTER">
                                     <Button fx:id="room_saveBtn" text="Save"/>

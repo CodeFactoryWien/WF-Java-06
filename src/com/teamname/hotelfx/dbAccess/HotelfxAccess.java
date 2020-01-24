@@ -6,6 +6,7 @@ import com.teamname.hotelfx.data.Guest;
 import com.teamname.hotelfx.data.Room;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -200,6 +201,33 @@ public class HotelfxAccess {
 
         pstmnt.close();
         return room;
+    }
+
+    public static List<Integer> getRoomsByDate(Timestamp startDate, Timestamp endDate) throws SQLException {
+        String sql = "SELECT rooms.roomID FROM rooms " +
+                     "INNER JOIN roomsbooked ON roomsbooked.roomID = rooms.roomID " +
+                     "INNER JOIN bookings    ON bookings.bookingID = roomsbooked.fk_bookingID " +
+                     "WHERE bookings.fk_bookingStatusID = 1 " +
+                     "AND     ((bookings.dateFrom <= ? AND bookings.dateTo >= ?) " +
+                     "      OR (bookings.dateFrom <= ? AND bookings.dateTo >= ?) " +
+                     "      OR (bookings.dateFrom >= ? AND bookings.dateTo <= ?)) ";
+        pstmnt = conn.prepareStatement(sql);
+        pstmnt.setTimestamp(1, startDate);
+        pstmnt.setTimestamp(2, startDate);
+        pstmnt.setTimestamp(3, endDate);
+        pstmnt.setTimestamp(4, endDate);
+        pstmnt.setTimestamp(5, startDate);
+        pstmnt.setTimestamp(6, endDate);
+
+        ResultSet rs = pstmnt.executeQuery();
+        List<Integer> roomList = FXCollections.observableArrayList();
+            while (rs.next()) {
+                roomList.add(rs.getInt("roomID"));
+            }
+
+        pstmnt.close();
+        System.out.println(roomList);
+        return roomList;
     }
 
 
@@ -414,6 +442,24 @@ public class HotelfxAccess {
         }
         pstmnt.close();
         return roomID;
+    }
+
+
+
+    public static boolean checkIfRoomIsInBooking(int roomID) throws SQLException {
+        String sql = "Select bookings.bookingID from bookings " +
+                "INNER JOIN roomsbooked ON roomsbooked.fk_bookingID = bookings.bookingID " +
+                "INNER JOIN rooms ON rooms.roomID = roomsbooked.roomID " +
+                "where bookings.fk_bookingStatusID = 1 " +
+                "AND rooms.roomID = " + roomID;
+        pstmnt = conn.prepareStatement(sql);
+        ResultSet rs = pstmnt.executeQuery();
+        List <Integer> bList = new ArrayList<>();
+        while (rs.next()) {
+            bList.add(rs.getInt("bookingID"));
+        }
+        pstmnt.close();
+        return bList.size() > 0;
     }
 
     private static final String bookings = "bookings";
