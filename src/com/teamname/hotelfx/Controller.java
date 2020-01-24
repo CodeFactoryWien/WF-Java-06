@@ -205,11 +205,12 @@ public class Controller {
             glassBtn.setText("GLASSMODE ON");
             stage.setTitle(stage.getTitle() + glass + night);
             stage.setOpacity(0.5);
-            //stage.setAlwaysOnTop(true);
+            stage.setAlwaysOnTop(true);
         } else {
             glass = "";
             glassBtn.setText("GLASSMODE OFF");
             stage.setAlwaysOnTop(false);
+
             stage.setTitle("Hotel FX");
             stage.setOpacity(1);
             stage.setTitle(stage.getTitle() + glass + night);
