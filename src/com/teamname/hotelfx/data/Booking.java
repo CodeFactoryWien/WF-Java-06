@@ -7,9 +7,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Booking {
 
     private final IntegerProperty bookingID = new SimpleIntegerProperty(this, "bookingID");

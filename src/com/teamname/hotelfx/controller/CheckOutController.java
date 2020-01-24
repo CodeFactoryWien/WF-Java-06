@@ -1,7 +1,6 @@
 package com.teamname.hotelfx.controller;
 
 import com.teamname.hotelfx.data.Booking;
-import com.teamname.hotelfx.data.Room;
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
