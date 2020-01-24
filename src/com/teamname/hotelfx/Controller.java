@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -29,8 +30,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +47,7 @@ public class Controller {
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
     private GuestSave guestRepository = new GuestSave();
     private HashMap<String, String> textFieldData;
+
     String glass = "";
     String night = "";
 
@@ -270,6 +275,7 @@ public class Controller {
 
         getTextFieldData("guest");
 
+        System.out.println((textFieldData));
         int c = 1;
         boolean filledOut = false;
         for (String i : textFieldData.values()) {
@@ -287,10 +293,12 @@ public class Controller {
         if (filledOut) {
             try {
                 if (!guestRepository.guestExists(Integer.parseInt(textFieldData.get("id")))) {
+                    System.out.println(textFieldData.get("gender"));
                     Guest guest = new Guest(Integer.parseInt(textFieldData.get("id")), textFieldData.get("firstName"), textFieldData.get("lastName"),
                             textFieldData.get("address"), textFieldData.get("city"), textFieldData.get("state"),
                             textFieldData.get("zipCode"), textFieldData.get("country"), textFieldData.get("phoneNumber"),
-                            textFieldData.get("emailAddress"), textFieldData.get("gender"));
+                            textFieldData.get("email"), textFieldData.get("gender"));
+                    System.out.println(guest.getZipCode());
                     int guestId = guestRepository.saveGuest(guest);
                     if (guestId > 0) {
                         this.alert("Save", "Successful!", Alert.AlertType.INFORMATION);
@@ -315,9 +323,6 @@ public class Controller {
         getTextFieldData("room");
 
         int c = 1;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDATE = formatter.parse(textFieldData.get("startDate"));
-        Date endDATE = formatter.parse(textFieldData.get("endDate"));
         boolean filledOut = false;
         
         for (String i : textFieldData.values()) {
@@ -325,10 +330,6 @@ public class Controller {
                 filledOut = true;
             } else if (i.equals("null")) {
                 this.alert("Error", "Please complete fields!", Alert.AlertType.ERROR);
-                break;
-            }else if(!(checkInController.getDateDifference(startDATE, endDATE, TimeUnit.DAYS) > 0)){
-                endDatePicker.setValue(null);
-                this.alert("Error", "Please enter a valid date!", Alert.AlertType.ERROR);
                 break;
             }else if (!StringPool.BLANK.equals(i)) {
                 c++;
@@ -389,14 +390,14 @@ public class Controller {
                 textFieldData.put("id", tempId);
                 textFieldData.put("firstName", guest_firstName.getText().trim());
                 textFieldData.put("lastName", guest_lastName.getText().trim());
+                textFieldData.put("gender", guest_gender.getText().trim());
                 textFieldData.put("address", guest_address.getText().trim());
                 textFieldData.put("city", guest_city.getText());
                 textFieldData.put("state", guest_state.getText().trim());
                 textFieldData.put("zipCode", guest_zipCode.getText().trim());
                 textFieldData.put("country", guest_country.getText().trim());
                 textFieldData.put("phoneNumber", guest_phoneNumber.getText());
-                textFieldData.put("emailAddress", guest_email.getText().trim());
-                textFieldData.put("gender", guest_gender.getText().trim());
+                textFieldData.put("email", guest_email.getText().trim());
                 break;
             }
             case ("room"): {
@@ -428,15 +429,13 @@ public class Controller {
         boolean rExists = false;
         for (Booking booking:BookingList.getInstance().getBookingList()) {
             for (Room room:booking.getRoomCountList()) {
-                System.out.println(HotelfxAccess.roomStatusByID(roomID));
                 if(room.getRoomID() == roomID){
-                    System.out.println(HotelfxAccess.roomStatusByID(roomID));
                     rExists = true;
                     break;
                 }
             }
         }
-        if(!(HotelfxAccess.roomStatusByID(roomID).equals("FREE"))){
+        if(HotelfxAccess.roomStatusByID(roomID).equals("IN_SERVICE")){
             rExists = true;
         }
         return rExists;
@@ -609,8 +608,9 @@ public class Controller {
         hotelComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<String>) (selected, oldHotel, newHotel) -> {
             if (newHotel != null) {
                 try {
-                    room_tableView.getItems().setAll(HotelfxAccess.getAllRooms(newHotel));
-                    listRoom = HotelfxAccess.getAllRooms(newHotel);
+
+                    room_tableView.getItems().setAll(removeBookedRooms(HotelfxAccess.getAllRooms(newHotel)));
+                    listRoom = removeBookedRooms(HotelfxAccess.getAllRooms(newHotel));
                     room_tableView.getSelectionModel().selectFirst();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -648,6 +648,7 @@ public class Controller {
 
 
             /* add column headers to tableViews*/
+
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(guestColumnsSQL), guest_tableView);
             HotelfxAccess.addColumnsToTable(HotelfxAccess.getColumnNames(roomsColumnsSQL), room_tableView);
 
@@ -693,6 +694,14 @@ public class Controller {
             }
         });
 
+        startDatePicker.valueProperty().addListener(
+                new datePickerListener(startDatePicker)
+        );
+
+        endDatePicker.valueProperty().addListener(
+                new datePickerListener(endDatePicker)
+        );
+
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab != null) {
@@ -726,6 +735,30 @@ public class Controller {
 
     }
 
+    public List<Room> removeBookedRooms(List<Room> roomList) throws SQLException {
+        if(startDatePicker.getValue() != null && endDatePicker.getValue() != null) {
+            List<Room> newRooms = FXCollections.observableArrayList();
+            Date startDATE = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date endDATE = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            long x = 3600000;
+            Timestamp sTimeStamp = new Timestamp(startDATE.getTime() + x);
+            Timestamp eTimeStamp = new Timestamp(endDATE.getTime() + x);
+
+            List<Integer> roomsNotAvailable = HotelfxAccess.getRoomsByDate(sTimeStamp, eTimeStamp);
+
+            for (Room room : roomList) {
+                if (!roomsNotAvailable.contains(room.getRoomID())) {
+                    newRooms.add(room);
+                }
+            }
+            return newRooms;
+
+        }
+        return roomList;
+    }
+
+
+
 
 
     private class ListSelectChangeListener implements ChangeListener<Number> {
@@ -749,7 +782,7 @@ public class Controller {
                 guest_address.setText(guest.getAddress());
                 guest_city.setText(guest.getCity());
                 guest_country.setText(guest.getCountry());
-                guest_email.setText(guest.getEmail());
+                guest_email.setText(guest.getEmailAdress());
                 guest_phoneNumber.setText(guest.getPhoneNumber());
                 guest_state.setText(guest.getState());
                 guest_zipCode.setText(guest.getZipCode());
@@ -762,6 +795,44 @@ public class Controller {
             }
 
 
+        }
+    }
+
+    private class datePickerListener implements ChangeListener<LocalDate> {
+        private DatePicker datePicker;
+
+        datePickerListener(DatePicker datePicker) {
+            this.datePicker = datePicker;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends LocalDate> selected,
+                            LocalDate old_val, LocalDate new_val) {
+
+            if (new_val == null || startDatePicker.getValue() == null || endDatePicker.getValue() == null) {
+                return;
+            }
+
+            Date startDATE = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date endDATE = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            System.out.println(checkInController.getDateDifference(endDATE, startDATE, TimeUnit.DAYS) >= 0);
+
+            if (checkInController.getDateDifference(startDATE, endDATE, TimeUnit.DAYS) <= 0 || checkInController.getDateDifference(endDATE, startDATE, TimeUnit.DAYS) >= 0) {
+                datePicker.setValue(null);
+                Alert alert = new Alert(Alert.AlertType.ERROR,
+                        "Please enter a valid date!",
+                        ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+            try {
+                listRoom = removeBookedRooms(listRoom);
+                room_tableView.getItems().setAll(removeBookedRooms(HotelfxAccess.getAllRooms(hotelComboBox.getSelectionModel().getSelectedItem())));
+                room_tableView.getSelectionModel().selectFirst();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

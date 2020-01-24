@@ -2,6 +2,7 @@ package com.teamname.hotelfx.data;
 
 import com.teamname.hotelfx.dbAccess.HotelfxAccess;
 
+import javax.print.attribute.standard.RequestingUserName;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +28,19 @@ public class GuestSave {
             statement.setString(counter++, String.valueOf(id));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Guest guest = new Guest();
-                guest.setGuestID(resultSet.getInt(1));
-                guest.setGuest_firstName(resultSet.getString(2));
-                guest.setGuest_lastName(resultSet.getString(3));
-                guest.setAddress(resultSet.getString(4));
-                guest.setCity(resultSet.getString(5));
-                guest.setState(resultSet.getString(6));
-                guest.setZipCode(resultSet.getString(7));
-                guest.setCountry(resultSet.getString(8));
-                guest.setPhoneNumber(resultSet.getString(9));
-                guest.setEmail(resultSet.getString(10));
-                guest.setGender(resultSet.getString(11));
+                int gID = resultSet.getInt(1);
+                String firstName = resultSet.getString(2);
+                String lastName = resultSet.getString(3);
+                String address = resultSet.getString(4);
+                String city = resultSet.getString(5);
+                String state = resultSet.getString(6);
+                String zip = resultSet.getString(7);
+                String country = resultSet.getString(8);
+                String phone = resultSet.getString(9);
+                String email = resultSet.getString(10);
+                String gender = resultSet.getString(11);
 
-                guests.add(guest);
+                guests.add(new Guest(gID,firstName,lastName,address,city,state,zip,country,phone,email,gender));
             }
 
             return guests.isEmpty() ? false : true;
@@ -69,16 +69,16 @@ public class GuestSave {
             String query = "INSERT INTO guests(guestID, firstName, lastName, address, city, state, zipCode, country, phoneNumber, emailAddress, gender) VALUES(DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             int counter = 1;
-            statement.setString(counter++, guest.getGuest_firstName());
-            statement.setString(counter++, guest.getGuest_lastName());
-            statement.setString(counter++, guest.getAddress());
-            statement.setString(counter++, guest.getCity());
-            statement.setString(counter++, guest.getState());
-            statement.setString(counter++, guest.getZipCode());
-            statement.setString(counter++, guest.getCountry());
-            statement.setString(counter++, guest.getPhoneNumber());
-            statement.setString(counter++, guest.getEmail());
-            statement.setString(counter++, guest.getGender());
+            statement.setString(1, guest.getGuest_firstName());
+            statement.setString(2, guest.getGuest_lastName());
+            statement.setString(3, guest.getAddress());
+            statement.setString(4, guest.getCity());
+            statement.setString(5, guest.getState());
+            statement.setString(6, guest.getZipCode());
+            statement.setString(7, guest.getCountry());
+            statement.setString(8, guest.getPhoneNumber());
+            statement.setString(9, guest.getEmailAdress());
+            statement.setString(10, guest.getGender());
 
             statement.executeUpdate();
             connection.commit();
